@@ -71,12 +71,11 @@ public class Vehicle extends SimulatedObject{
 	void advance(int time) {
 		if(status == VehicleStatus.TRAVELING) {
 			int previousLocation = location;
-			location = Math.min(location + speed, /*TODO get roadLength*/);
+			location = Math.min(location + speed, myRoad.getLength());
 			int contamination = (location - previousLocation) *  contClass;
 			totalCO2 += contamination;
-			//TODO addContamination
+			myRoad.addContamination(contamination);
 			//TODO enter in junction;
-				
 		}
 	}
 	

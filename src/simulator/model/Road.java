@@ -1,8 +1,15 @@
 package simulator.model;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import simulator.misc.SortedArrayList;
 
-public class Road extends SimulatedObject {
+public abstract class Road extends SimulatedObject {
 	
 	private final String INVALID_MAX_SPEED = "maxSpeed must be a positive value";
 
@@ -12,21 +19,29 @@ public class Road extends SimulatedObject {
 	
 	private final String NULL_POINTER_MSG = "is a null pointer";
 	
+	private final String INVALID_LOCATION = "location must be 0";
+	
+	private final String INVALID_SPEED = "speed must be 0";
+	
+	private final String INVALID_CONTAMINATION = "contamination can't be a negative value";
+	
 	private Junction source, destination;
 	
-	private int length;
+	protected int length;
 	
-	private int maxSpeed;
+	protected int maxSpeed;
 	
-	private int speedLimit;
+	protected int speedLimit;
 	
-	private int contLimit;
+	protected int contLimit;
 	
-	private Weather weather;
+	protected Weather weather;
 	
-	private int totalCO2;
+	protected int totalCO2;
 	
-	private SortedArrayList<Vehicle> vehicles;
+	private Comparator<Vehicle> cmp;
+	
+	private List<Vehicle> vehicles;
 	
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
 			int contLimit, int length, Weather weather) {
@@ -52,21 +67,103 @@ public class Road extends SimulatedObject {
 		this.contLimit = contLimit;
 		this.weather = weather;
 		totalCO2 = 0;
-		vehicles = new SortedArrayList<Vehicle>();
-		
+		cmp = Comparator.comparing(
+				Vehicle::getLocation, 
+				(s1,s2) -> {return s2.compareTo(s1); }
+			  );
+		vehicles = new SortedArrayList<Vehicle>(cmp);
 		// TODO Add road to srcJunc and destJunc
 	}
 
+	void enter(Vehicle v) {
+		if(v.getLocation() != 0)
+			throw new IllegalArgumentException(INVALID_LOCATION);
+		if(v.getSpeed() != 0)
+			throw new IllegalArgumentException(INVALID_SPEED);
+		vehicles.add(v);
+	}
+	
+	void exit(Vehicle v) {
+		vehicles.remove(v);
+	}
+	
+	void setWeather(Weather w) {
+		if(w == null)
+			throw new IllegalArgumentException("weather " + NULL_POINTER_MSG);
+		weather = w;
+	}
+	
+	void addContamination(int c) {
+		if(c < 0)
+			throw new IllegalArgumentException(INVALID_CONTAMINATION);
+		totalCO2 += c;
+	}
+	
+	abstract void reduceTotalContamination();
+	
+	abstract void updateSpeedLimit();
+	
+	abstract int calculateVehicleSpeed(Vehicle v);
+	
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
-		
+		reduceTotalContamination();
+		updateSpeedLimit();
+		for(Vehicle v : vehicles) {
+			v.setSpeed(calculateVehicleSpeed(v));
+			v.advance(time);
+		}
+		vehicles.sort(cmp);
 	}
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject jo = new JSONObject();
+		jo.put("id", _id);
+		jo.put("speedlimit", speedLimit);
+		jo.put("weather", weather.toString());
+		jo.put("co2", totalCO2);
+		JSONArray ja = new JSONArray();
+		for(Vehicle v : vehicles) {
+			ja.put(v.getId());
+		}
+		jo.put("vehicles", ja);
+		return jo;
+	}
+	
+	public int getLength() {
+		return length;
+	}
+	
+	public Junction getDest() {
+		return destination;
+	}
+	
+	public Junction getSrc() {
+		return source;
+	}
+	
+	public Weather getWeather() {
+		return weather;
 	}
 
+	public int getContLimit() {
+		return contLimit;
+	}
+	
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+	
+	public int getTotalCO2() {
+		return totalCO2;
+	}
+	
+	public int getSpeedLimit() {
+		return speedLimit;
+	}
+	
+	public List<Vehicle> getVehicles(){
+		return Collections.unmodifiableList(vehicles);
+	}
 }
