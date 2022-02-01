@@ -35,19 +35,23 @@ public class TrafficSimulator {
 	//TODO METER UN TRY CATCH
 	void executeEvents(){
 		for(Event v : events){
-			v.execute(roads);
+			if(v.getTime() == ticks){
+				v.execute(roads);
+				events.remove(v);
+			}
 		}
 	}
 
+	//MIRAR COMO NO ROMPER LA ENCAPSULACIÓN
 	void advanceJunctions(){
-		for(Junction j : roads.junctions){
-			j.update();
+		for(Junction j : roads.getJunctions()){
+			j.advance(ticks);
 		}
 	}
 
 	void advanceRoads(){
-		for(Road r : roads.roads){
-			r.update();
+		for(Road r : roads.getRoads()){
+			r.advance(ticks);
 		}
 	}
 
