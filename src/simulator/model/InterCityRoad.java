@@ -24,17 +24,20 @@ public class InterCityRoad extends Road{
 	}
 	
 	private int calculateWeatherImpactOnContamination() {
-		if(weather == Weather.SUNNY)
+		switch(weather) {
+		case SUNNY :
 			return SUNNY_IMPACT_ON_CONTAMINATION;
-		if(weather == Weather.CLOUDY)
+		case CLOUDY :
 			return CLOUDY_IMPACT_ON_CONTAMINATION;
-		if(weather == Weather.RAINY)
+		case RAINY:
 			return RAINY_IMPACT_ON_CONTAMINATION;
-		if(weather == Weather.WINDY)
+		case WINDY:
 			return WINDY_IMPACT_ON_CONTAMINATION;
-		if(weather == Weather.STORM)
+		case STORM:
 			return STORM_IMPACT_ON_CONTAMINATION;
-		return 0;
+		default:
+			return 0;
+		}
 	}
 
 	@Override

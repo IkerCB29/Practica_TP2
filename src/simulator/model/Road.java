@@ -11,19 +11,9 @@ import simulator.misc.SortedArrayList;
 
 public abstract class Road extends SimulatedObject {
 	
-	private final String INVALID_MAX_SPEED = "maxSpeed must be a positive value";
-
-	private final String INVALID_CONT_LIMIT = "contLimit can't be a negative value";
-	
-	private final String INVALID_LENGTH = "length must be a positive value";
-	
-	private final String NULL_POINTER_MSG = "is a null pointer";
-	
 	private final String INVALID_LOCATION = "location must be 0";
 	
 	private final String INVALID_SPEED = "speed must be 0";
-	
-	private final String INVALID_CONTAMINATION = "contamination can't be a negative value";
 	
 	private Junction source, destination;
 	
@@ -43,17 +33,16 @@ public abstract class Road extends SimulatedObject {
 	
 	private List<Vehicle> vehicles;
 	
-
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
 			int contLimit, int length, Weather weather) {
 		super(id);
 		
 		if(maxSpeed <= 0)
-			throw new IllegalArgumentException(INVALID_MAX_SPEED);
+			throw new IllegalArgumentException("maxSpeed " + NO_POSITIVE_VALUE);
 		if(contLimit < 0)
-			throw new IllegalArgumentException(INVALID_CONT_LIMIT);
+			throw new IllegalArgumentException("contLimit " + INVALID_NEGATIVE_VALUE);
 		if(length <= 0)
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			throw new IllegalArgumentException("length " + NO_POSITIVE_VALUE);
 		if(srcJunc == null)
 			throw new IllegalArgumentException("srcJunc " + NULL_POINTER_MSG);
 		if(destJunc == null)
@@ -96,7 +85,7 @@ public abstract class Road extends SimulatedObject {
 	
 	void addContamination(int c) {
 		if(c < 0)
-			throw new IllegalArgumentException(INVALID_CONTAMINATION);
+			throw new IllegalArgumentException("contamination " + INVALID_NEGATIVE_VALUE);
 		totalCO2 += c;
 	}
 	
@@ -167,4 +156,19 @@ public abstract class Road extends SimulatedObject {
 	public List<Vehicle> getVehicles(){
 		return Collections.unmodifiableList(vehicles);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) 
+			return true;
+        if (obj == null) 
+        	return false;
+        if (!(obj instanceof Road)) 
+        	return false;
+        final Road other = (Road)obj;
+        if(_id != other._id)
+        	return false;
+        return true;
+	}
+	
 }
