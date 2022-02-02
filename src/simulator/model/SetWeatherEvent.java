@@ -8,7 +8,7 @@ public class SetWeatherEvent extends Event{
 	private List<Pair<String, Weather>> ws;
 	//TODO MENSAJE DE LA EXCEPCION
 
-	SetWeatherEvent(int time, List<Pair<String,Weather>> ws) throws IllegalArgumentException{
+	SetWeatherEvent(int time, List<Pair<String,Weather>> ws){
 		super(time);
 		if(ws == null) throw new IllegalArgumentException();
 		this.ws = ws;
@@ -16,7 +16,7 @@ public class SetWeatherEvent extends Event{
 	}
 
 	@Override
-	void execute(RoadMap map) throws IllegalArgumentException{
+	void execute(RoadMap map){
 		for(Pair<String, Weather> p : ws){
 			Road r = map.getRoad(p.getFirst());
 

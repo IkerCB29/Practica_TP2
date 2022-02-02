@@ -2,12 +2,12 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-
-import simulator.misc.SortedArrayList;
 
 public class RoadMap {
 	private List<Junction> junList;
@@ -21,32 +21,61 @@ public class RoadMap {
 		junList = new ArrayList<>();
 		roadList = new ArrayList<>();
 		vehicleList = new ArrayList<>();
-		junMap = new Map<String, Junction>();
-		roadMap = new Map<String, Road>();
-		vehicleMap = new Map<String, Vehicle>();
+		junMap = new HashMap<>();
+		roadMap = new HashMap<>();
+		vehicleMap = new HashMap<>();
 	
 	}
 
-	//TODO
 	void addJunction(Junction j){
-		junList.add(junList.size()-1, j);
+		if(junMap.containsKey(j.getId())) throw new IllegalArgumentException();
+
+		junList.add(j);
+		junMap.put(j.getId(), j);
 	}
 
 	void addRoad(Road r){
 		if(roadMap.containsKey(r.getId()) || !junMap.containsKey(r.getSrc().getId())  || !junMap.containsKey(r.getDest().getId()))
 			throw new IllegalArgumentException();
 		
-		roadList.add(roadList.size()-1, r);
+		roadList.add(r);
 		roadMap.put(r.getId(), r);
 	}
 
 	//TODO Añadir comprobacion del punto 2 de esta funcion
 	void addVehicle(Vehicle v){
 
-		if(vehicleMap.containsKey(v.getId()))
+		if(vehicleMap.containsKey(v.getId())) throw new IllegalArgumentException();
 
-		vehicleList.add(vehicleList.size()-1, v);
+		vehicleList.add(v);
 		vehicleMap.put(v.getId(), v);
+	}
+
+	public JSONObject report(){
+		JSONObject jo = new JSONObject();
+		jo.put("junctions", junListReport());
+		jo.put("road", roadListReport());
+		jo.put("vehicles", vehicleListReport());
+
+		return jo;
+	}
+
+	private JSONArray junListReport(){
+		JSONArray ja = new JSONArray();
+		for(Junction d : junList) ja.put(d.report());
+		return ja;
+	}
+
+	private JSONArray roadListReport(){
+		JSONArray ja = new JSONArray();
+		for(Road r : roadList) ja.put(r.report());
+		return ja;
+	}
+
+	private JSONArray vehicleListReport(){
+		JSONArray ja = new JSONArray();
+		for(Vehicle v : vehicleList) ja.put(v.report());
+		return ja;
 	}
 
 	void reset(){
@@ -56,15 +85,6 @@ public class RoadMap {
 		junMap.clear();
 		roadMap.clear();
 		vehicleMap.clear();
-	}
-
-	public JSONObject report(){
-		JSONObject jo = new JSONObject();
-		jo.put("junctions", junList);
-		jo.put("road", roadList);
-		jo.put("vehicles", vehicleList);
-
-		return jo;
 	}
 
 	public Junction getJunction(String j){

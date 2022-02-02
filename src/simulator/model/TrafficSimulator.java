@@ -26,11 +26,6 @@ public class TrafficSimulator {
 		advanceJunctions();
 		advanceRoads();
 	}
-	public void reset(){
-		roads.reset();
-		events.clear();
-		ticks = INITIAL_TICKS;
-	}
 
 	//TODO METER UN TRY CATCH
 	void executeEvents(){
@@ -42,7 +37,6 @@ public class TrafficSimulator {
 		}
 	}
 
-	//MIRAR COMO NO ROMPER LA ENCAPSULACIÓN
 	void advanceJunctions(){
 		for(Junction j : roads.getJunctions()){
 			j.advance(ticks);
@@ -53,6 +47,12 @@ public class TrafficSimulator {
 		for(Road r : roads.getRoads()){
 			r.advance(ticks);
 		}
+	}
+
+	public void reset(){
+		roads.reset();
+		events.clear();
+		ticks = INITIAL_TICKS;
 	}
 
 	public JSONObject report(){
