@@ -7,14 +7,10 @@ import java.util.List;
 import org.json.*;
 
 public class Vehicle extends SimulatedObject{
-
-	private final String INVALID_MAX_SPEED = "maxSpeed must be a positive value";
 	
 	private final String INVALID_CONT_CLASS = "contClass must be a value between 0 and 10";
 	
 	private final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
-	
-	private final String INVALID_SPEED = "speed can't be a negative value";
 	
 	private List<Junction> itinerary;
 	
@@ -38,7 +34,7 @@ public class Vehicle extends SimulatedObject{
 		super(id);
 		
 		if(maxSpeed <= 0)
-			throw new IllegalArgumentException(INVALID_MAX_SPEED);
+			throw new IllegalArgumentException("maxSpeed " + NO_POSITIVE_VALUE);
 		if(contClass < 0 || contClass > 10 )
 			throw new IllegalArgumentException(INVALID_CONT_CLASS);
 		if(itinerary.size() < 2)
@@ -57,7 +53,7 @@ public class Vehicle extends SimulatedObject{
 	
 	void setSpeed(int s) {
 		if(s < 0)
-			throw new IllegalArgumentException(INVALID_SPEED);
+			throw new IllegalArgumentException("speed " + INVALID_NEGATIVE_VALUE);
 		speed = Math.min(s, maxSpeed);
 	}
 	
@@ -93,6 +89,9 @@ public class Vehicle extends SimulatedObject{
 		jo.put("co2", totalCO2);
 		jo.put("class", contClass);
 		jo.put("status", status.toString());
+		if(status == VehicleStatus.TRAVELING || status == VehicleStatus.WAITING)
+			jo.put("road", myRoad.getId());
+			jo.put("location", location);
 		return jo;
 	}
 	
