@@ -18,6 +18,7 @@ public class Main {
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
+	private static int ticks;
 
 	private static void parseArgs(String[] args) {
 
@@ -33,6 +34,7 @@ public class Main {
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseOutFileOption(line);
+			parseTicksOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -59,8 +61,17 @@ public class Main {
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
+		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop (default value is 10).").build());
 
 		return cmdLineOptions;
+	}
+
+	private static void parseTicksOption(CommandLine line){
+		if(line.hasOption("t")){
+			ticks = Integer.parseInt(line.getOptionValue("t"));
+		}
+		else
+			ticks = _timeLimitDefaultValue;
 	}
 
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
@@ -85,11 +96,13 @@ public class Main {
 	private static void initFactories() {
 
 		// TODO complete this method to initialize _eventsFactory
+		//Meter en eventsFactory toda la mierda que hay que meter
 
 	}
 
 	private static void startBatchMode() throws IOException {
 		// TODO complete this method to start the simulation
+		//Hacer el controler y llamar a sus metodos
 	}
 
 	private static void start(String[] args) throws IOException {
