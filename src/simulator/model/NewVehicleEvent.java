@@ -6,7 +6,7 @@ public class NewVehicleEvent extends Event{
 
 	private Vehicle v;
 	public NewVehicleEvent(int time, String id, int maxSpeed, int
-							contClass, List<Junction> itinerary) {
+							contClass, List<String> itinerary) {
 		super(time);
 		v = new Vehicle(id, maxSpeed, contClass, itinerary);
 	}

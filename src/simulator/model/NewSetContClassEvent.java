@@ -7,14 +7,14 @@ public class NewSetContClassEvent extends Event{
 
 	private List<Pair<String, Integer>> cs;
 	//TODO MENSAJE
-	NewSetContClassEvent(int time, List<Pair<String, Integer>> cs) throws IllegalArgumentException{
+	public NewSetContClassEvent(int time, List<Pair<String, Integer>> cs){
 		super(time);
 		if(cs == null) throw new IllegalArgumentException();
 		this.cs = cs;
 	}
 
 	@Override
-	void execute(RoadMap map) throws IllegalArgumentException{
+	void execute(RoadMap map){
 		Vehicle v;
 		
 		for(Pair<String, Integer> p : cs){
