@@ -11,9 +11,9 @@ import simulator.misc.SortedArrayList;
 
 public abstract class Road extends SimulatedObject {
 	
-	private final String INVALID_LOCATION = "location must be 0";
+	private static final String INVALID_LOCATION = "location must be 0";
 	
-	private final String INVALID_SPEED = "speed must be 0";
+	private static final String INVALID_SPEED = "speed must be 0";
 	
 	private Junction source, destination;
 	

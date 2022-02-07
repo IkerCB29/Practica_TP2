@@ -12,7 +12,7 @@ import simulator.model.Weather;
 
 public class SetWeatherEventBuilder extends Builder<Event>{
 
-	SetWeatherEventBuilder() {
+	public SetWeatherEventBuilder() {
 		super("set_weather");
 	}
 

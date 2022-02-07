@@ -8,10 +8,9 @@ import simulator.model.NewCityRoadEvent;
 
 public class NewCityRoadEventBuilder extends Builder<Event>{
 
-	NewCityRoadEventBuilder() {
+	public NewCityRoadEventBuilder() {
 		super("new_city_road");
 	}
-
 
 	//TODO
 	@Override

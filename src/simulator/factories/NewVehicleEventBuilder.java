@@ -10,13 +10,13 @@ import simulator.model.NewVehicleEvent;
 
 public class NewVehicleEventBuilder extends Builder<Event>{
 
-	NewVehicleEventBuilder() {
+	public NewVehicleEventBuilder() {
 		super("new_vehicle");
 	}
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		//TODO, DEVOLVER NULL SI ALGO ESTÁ MAL
+		//TODO, DEVOLVER NULL SI ALGO ESTÃ� MAL
 		//QUIZAS HACERLO COMPROBANDO SI DATA TIENE ESAS CLAVES
 
 		List<String> itinerary = new ArrayList<>();
