@@ -13,6 +13,6 @@ public class NewCityRoadEvent extends Event{
 	@Override
 	void execute(RoadMap map) {
 		map.addRoad(r);
-		
 	}
+	
 }

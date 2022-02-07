@@ -30,4 +30,19 @@ public abstract class SimulatedObject {
 	abstract void advance(int time);
 
 	abstract public JSONObject report();
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) 
+			return true;
+        if (obj == null) 
+        	return false;
+        if (!(obj instanceof Junction)) 
+        	return false;
+        final Junction other = (Junction)obj;
+        if(_id != other._id)
+        	return false;
+        return true;
+	}
+	
 }

@@ -38,9 +38,9 @@ public class Junction extends SimulatedObject{
 		super(id);
 		
 		if(lsStrategy == null)
-			throw new IllegalArgumentException("lsStrategy " + NULL_POINTER_MSG);
+			throw new NullPointerException("lsStrategy " + NULL_POINTER_MSG);
 		if(dqStrategy == null)
-			throw new IllegalArgumentException("dqStrategy " + NULL_POINTER_MSG);
+			throw new NullPointerException("dqStrategy " + NULL_POINTER_MSG);
 		if(xCoor < 0 || yCoor < 0)
 			throw new IllegalArgumentException(INVALID_POSITION);
 		
@@ -90,7 +90,18 @@ public class Junction extends SimulatedObject{
 
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
+		if(currGreen != -1) {
+			List<Vehicle> vehiclesToMove = dqStrategy.dequeue(qs.get(currGreen));
+			for(Vehicle v: vehiclesToMove) {
+				v.moveToNextRoad();
+				qs.get(currGreen).remove(v);
+			}
+		}
+		int nextGreen = lsStrategy.chooseNextGreen(srcRoads, qs, currGreen, lastSwitchingTime, time);
+		if(nextGreen != currGreen) {
+			currGreen = nextGreen;
+			lastSwitchingTime = time;
+		}
 	}
 
 	@Override
@@ -110,20 +121,6 @@ public class Junction extends SimulatedObject{
 		}
 		jo.put("queues", ja);
 		return jo;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) 
-			return true;
-        if (obj == null) 
-        	return false;
-        if (!(obj instanceof Junction)) 
-        	return false;
-        final Junction other = (Junction)obj;
-        if(_id != other._id)
-        	return false;
-        return true;
 	}
 	
 }

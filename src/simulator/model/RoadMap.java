@@ -24,7 +24,6 @@ public class RoadMap {
 		junMap = new HashMap<>();
 		roadMap = new HashMap<>();
 		vehicleMap = new HashMap<>();
-	
 	}
 
 	void addJunction(Junction j){
