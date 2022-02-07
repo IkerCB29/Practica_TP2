@@ -24,20 +24,10 @@ public class SetWeatherEventBuilder extends Builder<Event>{
 		for(int i = 0; i < data.getJSONArray("info").length(); i++){
 			aux = data.getJSONArray("info").getJSONObject(i);
 			
-			wl.add(new Pair<String,Weather>(aux.getString("road"), stringToWeather(aux.getString("weather"))));
+			wl.add(new Pair<String,Weather>(aux.getString("road"), Weather.valueOf(aux.getString("weather"))));
 		}
 
 		return new SetWeatherEvent(data.getInt("time"),wl);
-	}
-
-	private Weather stringToWeather(String s){
-		if(s == "SUNNY") return Weather.SUNNY;
-		if(s == "CLOUDY") return Weather.CLOUDY;
-		if(s == "RAINY") return Weather.RAINY;
-		if(s == "WINDY") return Weather.WINDY;
-		if(s == "STORM") return Weather.STORM;
-
-		return null;
 	}
 	
 }

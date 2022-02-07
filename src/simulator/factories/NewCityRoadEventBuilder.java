@@ -1,21 +1,18 @@
 package simulator.factories;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import simulator.model.Event;
 import simulator.model.NewCityRoadEvent;
 
-public class NewCityRoadEventBuilder extends Builder<Event>{
+public class NewCityRoadEventBuilder extends NewRoadEventBuilder{
 
 	public NewCityRoadEventBuilder() {
 		super("new_city_road");
 	}
-
-	//TODO
+	
 	@Override
-	protected Event createTheInstance(JSONObject data) {
-		return null;
+	Event createTheRoad() {
+		return new NewCityRoadEvent(time, id, src, dest, length, co2Limit, maxSpeed, weather);
 	}
 	
 }

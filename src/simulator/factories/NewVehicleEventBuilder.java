@@ -16,16 +16,12 @@ public class NewVehicleEventBuilder extends Builder<Event>{
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		//TODO, DEVOLVER NULL SI ALGO ESTÃ� MAL
-		//QUIZAS HACERLO COMPROBANDO SI DATA TIENE ESAS CLAVES
-
 		List<String> itinerary = new ArrayList<>();
 		for(int i = 0; i < data.getJSONArray("itinerary").length(); i++){
 			itinerary.add(data.getJSONArray("itinerary").getString(i));
 		}
 
 		return new NewVehicleEvent(data.getInt("time"), data.getString("id"), data.getInt("maxspeed"), data.getInt("class"), itinerary);
-
 	}
 	
 }
