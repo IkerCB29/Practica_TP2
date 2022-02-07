@@ -22,6 +22,7 @@ import simulator.factories.MostCrowdedStrategyBuilder;
 import simulator.factories.MoveAllStrategyBuilder;
 import simulator.factories.MoveFirstStrategyBuilder;
 import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
 import simulator.factories.NewJunctionEventBuilder;
 import simulator.factories.NewVehicleEventBuilder;
 import simulator.factories.RoundRobinStrategyBuilder;
