@@ -17,7 +17,7 @@ public class CityRoad extends Road{
 	}
 
 	private int calculateWeatherImpactOnContamination() {
-		if(weather == Weather.WINDY || weather == Weather.CLOUDY)
+		if(weather == Weather.WINDY || weather == Weather.STORM)
 			return WINDY_STORM_IMPACT_ON_CONTAMINATION;
 		else
 			return OTHER_WEATHER_IMPACT_ON_CONTAMINATION;
@@ -28,7 +28,10 @@ public class CityRoad extends Road{
 
 	@Override
 	int calculateVehicleSpeed(Vehicle v) {
-		return ((11 - v.getContClass()) * speedLimit) / 11 ;
+		if(v.getStatus() == VehicleStatus.WAITING)
+			return 0;
+		else
+			return ((11 - v.getContClass()) * speedLimit) / 11 ;
 	}
 
 }

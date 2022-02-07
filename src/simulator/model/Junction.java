@@ -15,6 +15,8 @@ public class Junction extends SimulatedObject{
 	
 	private static final String INVALID_ROAD = "invalid road for the requested junction";
 	
+	private static final String NO_CURRENT_GREEN_ROAD = "none";
+	
 	private List<Road> srcRoads;
 	
 	private Map<Junction, Road> destRoads;
@@ -108,7 +110,7 @@ public class Junction extends SimulatedObject{
 	public JSONObject report() {
 		JSONObject jo = new JSONObject();
 		jo.put("id", _id);
-		jo.put("green", srcRoads.get(currGreen).getId());
+		jo.put("green", getGreenRoad());
 		JSONArray ja = new JSONArray();
 		for(Map.Entry<Road, List<Vehicle>> entry : roadQueue.entrySet()) {
 			JSONArray vehicles = new JSONArray();
@@ -121,6 +123,13 @@ public class Junction extends SimulatedObject{
 		}
 		jo.put("queues", ja);
 		return jo;
+	}
+	
+	private String getGreenRoad() {
+		if(currGreen != - 1)
+			return srcRoads.get(currGreen).getId();
+		else
+			return NO_CURRENT_GREEN_ROAD;
 	}
 	
 }

@@ -24,7 +24,7 @@ public class SetContClassEventBuilder extends Builder<Event>{
 		for(int i = 0; i < data.getJSONArray("info").length(); i++){
 			aux = data.getJSONArray("info").getJSONObject(i);
 			
-			ls.add(new Pair<String,Integer>(aux.getString("road"), aux.getInt("class")));
+			ls.add(new Pair<String,Integer>(aux.getString("vehicle"), aux.getInt("class")));
 		}
 
 		return new NewSetContClassEvent(data.getInt("time"), ls);

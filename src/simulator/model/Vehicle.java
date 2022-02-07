@@ -12,8 +12,7 @@ public class Vehicle extends SimulatedObject{
 	
 	private static final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
 	
-	//TODO Mensajito
-	private final String INVALID_STATUS = "";
+	private static final String INVALID_STATUS_MOVE_ROAD = "vehicle status is not waiting neither pending";
 	
 	private List<Junction> itinerary;
 	
@@ -74,24 +73,27 @@ public class Vehicle extends SimulatedObject{
 		if(status == VehicleStatus.TRAVELING) {
 			int previousLocation = location;
 			location = Math.min(location + speed, myRoad.getLength());
+			distanceTraveled += location - previousLocation;
 			int contamination = (location - previousLocation) *  contClass;
 			totalCO2 += contamination;
 			myRoad.addContamination(contamination);
 			if(location == myRoad.getLength()) {
-				itinerary.get(itineraryPos).enter(this);
 				status = VehicleStatus.WAITING;
+				speed = 0;
+				itinerary.get(itineraryPos).enter(this);
 			}
 		}
 	}
 	
 	void moveToNextRoad() {
 		if(status == VehicleStatus.TRAVELING || status == VehicleStatus.ARRIVED)
-			throw new RuntimeException(INVALID_STATUS);
+			throw new RuntimeException(INVALID_STATUS_MOVE_ROAD);
 		if(status == VehicleStatus.WAITING) 
 			myRoad.exit(this);
 		itineraryPos++;
 		if(itineraryPos < itinerary.size()) {
 			myRoad = itinerary.get(itineraryPos - 1).roadTo(itinerary.get(itineraryPos));
+			location = 0;
 			myRoad.enter(this);
 			status = VehicleStatus.TRAVELING;
 		}

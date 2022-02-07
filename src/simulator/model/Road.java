@@ -52,6 +52,7 @@ public abstract class Road extends SimulatedObject {
 		
 		source = srcJunc;
 		destination = destJunc;
+		this.length = length;
 		this.maxSpeed = maxSpeed;
 		speedLimit = maxSpeed;
 		this.contLimit = contLimit;

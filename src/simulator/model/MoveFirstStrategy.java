@@ -1,8 +1,7 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import simulator.misc.Utils;
 
 public class MoveFirstStrategy implements DequeuingStrategy{
 
@@ -10,9 +9,10 @@ public class MoveFirstStrategy implements DequeuingStrategy{
 
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		Vehicle [] firstVehicle = new Vehicle[1];
-		firstVehicle[0] = q.get(0);
-		return Utils.arrayToList(firstVehicle);
+		List<Vehicle> firstVehicle = new ArrayList<Vehicle>();
+		if(q.size() > 0)
+			firstVehicle.add(q.get(0));
+		return firstVehicle;
 	}
 
 }

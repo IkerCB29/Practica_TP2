@@ -10,7 +10,7 @@ public class NewCityRoadEvent extends NewRoadEvent{
 	}
 	
 	Road createRoadObject() {
-		return new CityRoad(id, srcJunction, desJunction, length, co2Limit, maxSpeed, weather);
+		return new CityRoad(id, srcJunction, desJunction, maxSpeed, co2Limit, length, weather);
 	}
 	
 }
