@@ -2,15 +2,15 @@ package simulator.model;
 
 public class InterCityRoad extends Road{
 	
-	private final int SUNNY_IMPACT_ON_CONTAMINATION = 2;
+	private static final int SUNNY_IMPACT_ON_CONTAMINATION = 2;
 	
-	private final int CLOUDY_IMPACT_ON_CONTAMINATION = 3;
+	private static final int CLOUDY_IMPACT_ON_CONTAMINATION = 3;
 	
-	private final int RAINY_IMPACT_ON_CONTAMINATION = 10;
+	private static final int RAINY_IMPACT_ON_CONTAMINATION = 10;
 	
-	private final int WINDY_IMPACT_ON_CONTAMINATION = 15;
+	private static final int WINDY_IMPACT_ON_CONTAMINATION = 15;
 	
-	private final int STORM_IMPACT_ON_CONTAMINATION = 20;
+	private static final int STORM_IMPACT_ON_CONTAMINATION = 20;
 
 	InterCityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length,
 			Weather weather) {

@@ -4,11 +4,11 @@ import org.json.JSONObject;
 
 public abstract class SimulatedObject {
 	
-	protected final String NULL_POINTER_MSG = "is a null pointer";
+	protected static final String NULL_POINTER_MSG = "is a null pointer";
 	
-	protected final String INVALID_NEGATIVE_VALUE = "can't be a negative value";
+	protected static final String INVALID_NEGATIVE_VALUE = "can't be a negative value";
 	
-	protected final String NO_POSITIVE_VALUE = "must be a positive value";
+	protected static final String NO_POSITIVE_VALUE = "must be a positive value";
 
 	protected String _id;
 

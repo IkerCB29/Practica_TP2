@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RoadMap {
+	
 	private List<Junction> junList;
 	private List<Road> roadList;
 	private List<Vehicle> vehicleList;
@@ -101,10 +102,8 @@ public class RoadMap {
 	public List<Road> getRoads(){
 		return Collections.unmodifiableList(roadList);
 	}
-	public List<Vehicle> getVehicle(){
+	public List<Vehicle> getVehicles(){
 		return Collections.unmodifiableList(vehicleList);
+		
 	}
-
-
-
 }

@@ -1,15 +1,15 @@
 package simulator.model;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
-public class MoveAllStrategy implements DequeuingStrategy{
+public class MoveAllStrategy implements DequeuingStrategy {
 
-	 MoveAllStrategy(){}
-	 
+	public MoveAllStrategy() {}
+
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
 		return Collections.unmodifiableList(q);
 	}
-
+	
 }

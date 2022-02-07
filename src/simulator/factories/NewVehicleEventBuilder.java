@@ -10,22 +10,18 @@ import simulator.model.NewVehicleEvent;
 
 public class NewVehicleEventBuilder extends Builder<Event>{
 
-	NewVehicleEventBuilder() {
+	public NewVehicleEventBuilder() {
 		super("new_vehicle");
 	}
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		//TODO, DEVOLVER NULL SI ALGO ESTÁ MAL
-		//QUIZAS HACERLO COMPROBANDO SI DATA TIENE ESAS CLAVES
-
 		List<String> itinerary = new ArrayList<>();
 		for(int i = 0; i < data.getJSONArray("itinerary").length(); i++){
 			itinerary.add(data.getJSONArray("itinerary").getString(i));
 		}
 
 		return new NewVehicleEvent(data.getInt("time"), data.getString("id"), data.getInt("maxspeed"), data.getInt("class"), itinerary);
-
 	}
 	
 }

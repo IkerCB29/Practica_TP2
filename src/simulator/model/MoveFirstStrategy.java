@@ -6,13 +6,13 @@ import simulator.misc.Utils;
 
 public class MoveFirstStrategy implements DequeuingStrategy{
 
-    MoveFirstStrategy () {}
-	
-    @Override
+	public MoveFirstStrategy() {}
+
+	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		Vehicle [] aux = new Vehicle[1];
-		aux[0] = q.get(0);
-		return Utils.arrayToList(aux);
+		Vehicle [] firstVehicle = new Vehicle[1];
+		firstVehicle[0] = q.get(0);
+		return Utils.arrayToList(firstVehicle);
 	}
 
 }

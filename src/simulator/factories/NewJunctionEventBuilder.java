@@ -27,7 +27,6 @@ public class NewJunctionEventBuilder extends Builder<Event>{
 		int x = coord.getInt(0);
 		int y = coord.getInt(1);
 
-		//TODO, DEVOLVER NULL SI ALGO ES NULO
 		return new NewJunctionEvent(time, id, lssF.createInstance(data.getJSONObject("ls_strategy")),	dqF.createInstance(data.getJSONObject("dq_strategy")), x, y);
 
 	}

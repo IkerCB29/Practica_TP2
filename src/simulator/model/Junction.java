@@ -11,9 +11,9 @@ import org.json.JSONObject;
 
 public class Junction extends SimulatedObject{
 	
-	private final String INVALID_POSITION = "coordinates aren't valid";
+	private static final String INVALID_POSITION = "coordinates aren't valid";
 	
-	private final String INVALID_ROAD = "invalid road for the requested junction";
+	private static final String INVALID_ROAD = "invalid road for the requested junction";
 	
 	private List<Road> srcRoads;
 	

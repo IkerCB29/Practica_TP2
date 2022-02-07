@@ -8,9 +8,9 @@ import org.json.*;
 
 public class Vehicle extends SimulatedObject{
 	
-	private final String INVALID_CONT_CLASS = "contClass must be a value between 0 and 10";
+	private static final String INVALID_CONT_CLASS = "contClass must be a value between 0 and 10";
 	
-	private final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
+	private static final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
 	
 	//TODO Mensajito
 	private final String INVALID_STATUS = "";

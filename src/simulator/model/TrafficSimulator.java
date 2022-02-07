@@ -11,7 +11,7 @@ public class TrafficSimulator {
 	private SortedArrayList<Event> events;
 	private int ticks;
 
-	TrafficSimulator(){
+	public TrafficSimulator(){
 		roads = new RoadMap();
 		events = new SortedArrayList<Event>();
 		ticks = INITIAL_TICKS;

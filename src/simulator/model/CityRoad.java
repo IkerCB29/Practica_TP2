@@ -2,9 +2,9 @@ package simulator.model;
 
 public class CityRoad extends Road{
 
-	private final int WINDY_STORM_IMPACT_ON_CONTAMINATION = 10;
+	private static final int WINDY_STORM_IMPACT_ON_CONTAMINATION = 10;
 	
-	private final int OTHER_WEATHER_IMPACT_ON_CONTAMINATION = 2;
+	private static final int OTHER_WEATHER_IMPACT_ON_CONTAMINATION = 2;
 	
 	CityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
