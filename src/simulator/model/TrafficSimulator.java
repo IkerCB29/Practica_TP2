@@ -1,5 +1,7 @@
 package simulator.model;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import simulator.misc.SortedArrayList;
 
@@ -8,7 +10,7 @@ public class TrafficSimulator {
 	private final int INITIAL_TICKS = 0;
 
 	private RoadMap roads;
-	private SortedArrayList<Event> events;
+	private List<Event> events;
 	private int ticks;
 
 	public TrafficSimulator(){
@@ -29,12 +31,14 @@ public class TrafficSimulator {
 
 	//TODO METER UN TRY CATCH
 	void executeEvents(){
+		List<Event> aux = new SortedArrayList<Event>();
 		for(Event v : events){
-			if(v.getTime() == ticks){
+			if(v.getTime() == ticks)
 				v.execute(roads);
-				events.remove(v);
-			}
+			else
+				aux.add(v);
 		}
+		events = aux;
 	}
 
 	void advanceJunctions(){

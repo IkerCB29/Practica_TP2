@@ -44,14 +44,15 @@ public abstract class Road extends SimulatedObject {
 		if(length <= 0)
 			throw new IllegalArgumentException("length " + NO_POSITIVE_VALUE);
 		if(srcJunc == null)
-			throw new IllegalArgumentException("srcJunc " + NULL_POINTER_MSG);
+			throw new NullPointerException("srcJunc " + NULL_POINTER_MSG);
 		if(destJunc == null)
-			throw new IllegalArgumentException("destJunc " + NULL_POINTER_MSG);
+			throw new NullPointerException("destJunc " + NULL_POINTER_MSG);
 		if(weather == null)
-			throw new IllegalArgumentException("weather " + NULL_POINTER_MSG);
+			throw new NullPointerException("weather " + NULL_POINTER_MSG);
 		
 		source = srcJunc;
 		destination = destJunc;
+		this.length = length;
 		this.maxSpeed = maxSpeed;
 		speedLimit = maxSpeed;
 		this.contLimit = contLimit;
@@ -62,7 +63,9 @@ public abstract class Road extends SimulatedObject {
 				(s1,s2) -> {return s2.compareTo(s1); }
 			  );
 		vehicles = new SortedArrayList<Vehicle>(cmp);
-		// TODO Add road to srcJunc and destJunc
+		
+		source.addOutGoingRoad(this);
+		destination.addIncomingRoad(this);
 	}
 
 	void enter(Vehicle v) {
@@ -155,20 +158,6 @@ public abstract class Road extends SimulatedObject {
 	
 	public List<Vehicle> getVehicles(){
 		return Collections.unmodifiableList(vehicles);
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) 
-			return true;
-        if (obj == null) 
-        	return false;
-        if (!(obj instanceof Road)) 
-        	return false;
-        final Road other = (Road)obj;
-        if(_id != other._id)
-        	return false;
-        return true;
 	}
 	
 }

@@ -1,7 +1,9 @@
 package simulator.launcher;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +126,7 @@ public class Main {
 		dqbs.add( new MoveFirstStrategyBuilder() );
 		dqbs.add( new MoveAllStrategyBuilder() );
 		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs);
-		
+
 		List<Builder<Event>> ebs = new ArrayList<Builder<Event>>();
 		ebs.add(new NewJunctionEventBuilder(lssFactory, dqsFactory));
 		ebs.add(new NewCityRoadEventBuilder());
@@ -139,6 +141,8 @@ public class Main {
 		initFactories();
 		TrafficSimulator ts = new TrafficSimulator();
 		Controller c = new Controller(ts, _eventsFactory);
+		InputStream is = new FileInputStream(_inFile);
+		c.loadEvents(is);
 		OutputStream os;
 		if(_outFile != null)
 			os = new FileOutputStream(_outFile);
@@ -157,7 +161,7 @@ public class Main {
 	//
 	// -i resources/examples/ex1.json
 	// -i resources/examples/ex1.json -t 300
-	// -i resources/examples/ex1.json -o resources/tmp/ex1.out.json
+	// -i resources/examples/ex1.json -o resources/examples/ex1.out.json
 	// --help
 
 	public static void main(String[] args) {

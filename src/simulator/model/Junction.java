@@ -15,13 +15,15 @@ public class Junction extends SimulatedObject{
 	
 	private static final String INVALID_ROAD = "invalid road for the requested junction";
 	
+	private static final String NO_CURRENT_GREEN_ROAD = "none";
+	
 	private List<Road> srcRoads;
 	
 	private Map<Junction, Road> destRoads;
 	
 	private List<List<Vehicle>> qs;
 	
-	private Map<Road, List<Vehicle>> roadQueue;
+	private Map<Road, List<Vehicle>> road_Queue;
 	
 	private int currGreen;
 	
@@ -38,16 +40,16 @@ public class Junction extends SimulatedObject{
 		super(id);
 		
 		if(lsStrategy == null)
-			throw new IllegalArgumentException("lsStrategy " + NULL_POINTER_MSG);
+			throw new NullPointerException("lsStrategy " + NULL_POINTER_MSG);
 		if(dqStrategy == null)
-			throw new IllegalArgumentException("dqStrategy " + NULL_POINTER_MSG);
+			throw new NullPointerException("dqStrategy " + NULL_POINTER_MSG);
 		if(xCoor < 0 || yCoor < 0)
 			throw new IllegalArgumentException(INVALID_POSITION);
 		
 		srcRoads = new ArrayList<Road>();
 		destRoads = new HashMap<Junction, Road>();
 		qs = new ArrayList<List<Vehicle>>();
-		roadQueue = new HashMap<Road, List<Vehicle>>();
+		road_Queue = new HashMap<Road, List<Vehicle>>();
 		currGreen = -1;
 		lastSwitchingTime = 0;
 		this.lsStrategy = lsStrategy;
@@ -62,7 +64,7 @@ public class Junction extends SimulatedObject{
 		srcRoads.add(r);
 		List<Vehicle> queue = new LinkedList<Vehicle>();
 		qs.add(queue);
-		roadQueue.put(r, queue);
+		road_Queue.put(r, queue);
 	}
 	
 	void addOutGoingRoad(Road r) {
@@ -80,7 +82,7 @@ public class Junction extends SimulatedObject{
 	}
 	
 	void enter(Vehicle v) {
-		List<Vehicle>queue = roadQueue.get(v.getRoad());
+		List<Vehicle>queue = road_Queue.get(v.getRoad());
 		queue.add(v);
 	}
 	
@@ -90,40 +92,45 @@ public class Junction extends SimulatedObject{
 
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
+		if(currGreen != -1) {
+			List<Vehicle> vehiclesToMove = dqStrategy.dequeue(qs.get(currGreen));
+			for(Vehicle v: vehiclesToMove) {
+				v.moveToNextRoad();
+				qs.get(currGreen).remove(v);
+			}
+		}
+		int nextGreen = lsStrategy.chooseNextGreen(srcRoads, qs, currGreen, lastSwitchingTime, time);
+		if(nextGreen != currGreen) {
+			currGreen = nextGreen;
+			lastSwitchingTime = time;
+		}
 	}
 
 	@Override
 	public JSONObject report() {
 		JSONObject jo = new JSONObject();
 		jo.put("id", _id);
-		jo.put("green", srcRoads.get(currGreen).getId());
+		jo.put("green", getGreenRoad());
 		JSONArray ja = new JSONArray();
-		for(Map.Entry<Road, List<Vehicle>> entry : roadQueue.entrySet()) {
-			JSONArray vehicles = new JSONArray();
-			for(Vehicle v: roadQueue.get(entry.getKey())) {
-				vehicles.put(v.getId());
-			}
+		for(Map.Entry<Road, List<Vehicle>> entry : road_Queue.entrySet()) {
 			JSONObject roadQueue = new JSONObject();
-			roadQueue.put(entry.getKey().getId(), vehicles);
+			roadQueue.put("road", entry.getKey());
+			JSONArray vehicles = new JSONArray();
+			for(Vehicle v: entry.getValue()) {
+				vehicles.put(v);
+			}
+			roadQueue.put("vehicles", vehicles);
 			ja.put(roadQueue);
 		}
 		jo.put("queues", ja);
 		return jo;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) 
-			return true;
-        if (obj == null) 
-        	return false;
-        if (!(obj instanceof Junction)) 
-        	return false;
-        final Junction other = (Junction)obj;
-        if(_id != other._id)
-        	return false;
-        return true;
+	private String getGreenRoad() {
+		if(currGreen != - 1)
+			return srcRoads.get(currGreen).getId();
+		else
+			return NO_CURRENT_GREEN_ROAD;
 	}
 	
 }

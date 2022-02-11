@@ -9,8 +9,8 @@ public class NewVehicleEvent extends Event{
 	private int maxSpeed, contClass;
 	private String id;
 	private List<String> itinerary;
-	public NewVehicleEvent(int time, String id, int maxSpeed, int
-							contClass, List<String> itinerary) {
+	public NewVehicleEvent(int time, String id, int maxSpeed, int contClass, 
+			List<String> itinerary) {
 		super(time);
 		this.id = id;
 		this.maxSpeed = maxSpeed;
@@ -27,6 +27,5 @@ public class NewVehicleEvent extends Event{
 		v = new Vehicle(id, maxSpeed, contClass, junIt);
 		map.addVehicle(v);
 		v.moveToNextRoad();
-
 	}
 }

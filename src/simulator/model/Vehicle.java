@@ -12,7 +12,11 @@ public class Vehicle extends SimulatedObject{
 	
 	private static final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
 	
+	private static final String INVALID_STATUS_MOVE_ROAD = "vehicle status is not waiting neither pending";
+	
 	private List<Junction> itinerary;
+	
+	private int itineraryPos;
 	
 	private int maxSpeed;
 	
@@ -40,6 +44,8 @@ public class Vehicle extends SimulatedObject{
 		if(itinerary.size() < 2)
 			throw new IllegalArgumentException(INVALID_ITINERARY);
 		
+		this.itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
+		itineraryPos = 0;
 		this.maxSpeed = maxSpeed;
 		speed = 0;
 		status = VehicleStatus.PENDING;
@@ -47,7 +53,6 @@ public class Vehicle extends SimulatedObject{
 		location = 0;
 		this.contClass = contClass;
 		totalCO2 = 0;
-		this.itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
 		distanceTraveled = 0;
 	}
 	
@@ -68,16 +73,32 @@ public class Vehicle extends SimulatedObject{
 		if(status == VehicleStatus.TRAVELING) {
 			int previousLocation = location;
 			location = Math.min(location + speed, myRoad.getLength());
+			distanceTraveled += location - previousLocation;
 			int contamination = (location - previousLocation) *  contClass;
 			totalCO2 += contamination;
 			myRoad.addContamination(contamination);
-			//TODO enter in junction;
+			if(location == myRoad.getLength()) {
+				status = VehicleStatus.WAITING;
+				speed = 0;
+				itinerary.get(itineraryPos).enter(this);
+			}
 		}
 	}
 	
-	//TODO writeFunction
 	void moveToNextRoad() {
-		
+		if(status == VehicleStatus.TRAVELING || status == VehicleStatus.ARRIVED)
+			throw new RuntimeException(INVALID_STATUS_MOVE_ROAD);
+		if(status == VehicleStatus.WAITING) 
+			myRoad.exit(this);
+		itineraryPos++;
+		if(itineraryPos < itinerary.size()) {
+			myRoad = itinerary.get(itineraryPos - 1).roadTo(itinerary.get(itineraryPos));
+			location = 0;
+			myRoad.enter(this);
+			status = VehicleStatus.TRAVELING;
+		}
+		else
+			status = VehicleStatus.ARRIVED;
 	}
 
 	@Override

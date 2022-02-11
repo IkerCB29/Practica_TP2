@@ -50,7 +50,9 @@ public class InterCityRoad extends Road{
 
 	@Override
 	int calculateVehicleSpeed(Vehicle v) {
-		if(weather == Weather.STORM)
+		if(v.getStatus() == VehicleStatus.WAITING)
+			return 0;
+		else if(weather == Weather.STORM)
 			return (speedLimit * 8) / 10;
 		else
 			return speedLimit;

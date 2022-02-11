@@ -26,6 +26,7 @@ public abstract class NewRoadEvent extends Event{
 		desJunction = map.getJunction(destJun);
 		map.addRoad(createRoadObject());;
 	}
+	
 	abstract Road createRoadObject();
 	
 }

@@ -25,7 +25,6 @@ public class RoadMap {
 		junMap = new HashMap<>();
 		roadMap = new HashMap<>();
 		vehicleMap = new HashMap<>();
-	
 	}
 
 	void addJunction(Junction j){
@@ -55,7 +54,7 @@ public class RoadMap {
 	public JSONObject report(){
 		JSONObject jo = new JSONObject();
 		jo.put("junctions", junListReport());
-		jo.put("road", roadListReport());
+		jo.put("roads", roadListReport());
 		jo.put("vehicles", vehicleListReport());
 
 		return jo;
