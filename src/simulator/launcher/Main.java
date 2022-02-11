@@ -22,6 +22,7 @@ import simulator.factories.MostCrowdedStrategyBuilder;
 import simulator.factories.MoveAllStrategyBuilder;
 import simulator.factories.MoveFirstStrategyBuilder;
 import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
 import simulator.factories.NewJunctionEventBuilder;
 import simulator.factories.NewVehicleEventBuilder;
 import simulator.factories.RoundRobinStrategyBuilder;
@@ -114,7 +115,6 @@ public class Main {
 	}
 
 	private static void initFactories() {
-
 		List<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
 		lsbs.add( new RoundRobinStrategyBuilder());
 		lsbs.add( new MostCrowdedStrategyBuilder());
@@ -124,7 +124,6 @@ public class Main {
 		dqbs.add( new MoveFirstStrategyBuilder() );
 		dqbs.add( new MoveAllStrategyBuilder() );
 		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs);
-
 		
 		List<Builder<Event>> ebs = new ArrayList<Builder<Event>>();
 		ebs.add(new NewJunctionEventBuilder(lssFactory, dqsFactory));
@@ -134,7 +133,6 @@ public class Main {
 		ebs.add(new SetWeatherEventBuilder());
 		ebs.add(new SetContClassEventBuilder());
 		_eventsFactory = new BuilderBasedFactory<Event>(ebs);
-
 	}
 
 	private static void startBatchMode() throws IOException {
