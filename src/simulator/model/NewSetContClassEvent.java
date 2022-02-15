@@ -21,7 +21,7 @@ public class NewSetContClassEvent extends Event{
 			v = map.getVehicle(p.getFirst());
 
 			if(v == null) throw new IllegalArgumentException();
-			v.setContamination(p.getSecond());
+			v.setContClass(p.getSecond());
 		}		
 	}
 	

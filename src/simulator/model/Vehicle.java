@@ -59,10 +59,11 @@ public class Vehicle extends SimulatedObject{
 	void setSpeed(int s) {
 		if(s < 0)
 			throw new IllegalArgumentException("speed " + INVALID_NEGATIVE_VALUE);
-		speed = Math.min(s, maxSpeed);
+		if(status == VehicleStatus.TRAVELING)
+			speed = Math.min(s, maxSpeed);
 	}
 	
-	void setContamination(int c) {
+	void setContClass(int c) {
 		if(c < 0 || c > 10)
 			throw new IllegalArgumentException(INVALID_CONT_CLASS);
 		contClass = c;
@@ -110,9 +111,10 @@ public class Vehicle extends SimulatedObject{
 		jo.put("co2", totalCO2);
 		jo.put("class", contClass);
 		jo.put("status", status.toString());
-		if(status == VehicleStatus.TRAVELING || status == VehicleStatus.WAITING)
+		if(status == VehicleStatus.TRAVELING || status == VehicleStatus.WAITING) {
 			jo.put("road", myRoad.getId());
 			jo.put("location", location);
+		}
 		return jo;
 	}
 	
