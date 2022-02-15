@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import simulator.misc.Pair;
 import simulator.model.Event;
-import simulator.model.NewSetContClassEvent;
+import simulator.model.SetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event>{
 
@@ -27,7 +27,7 @@ public class SetContClassEventBuilder extends Builder<Event>{
 			ls.add(new Pair<String,Integer>(aux.getString("vehicle"), aux.getInt("class")));
 		}
 
-		return new NewSetContClassEvent(data.getInt("time"), ls);
+		return new SetContClassEvent(data.getInt("time"), ls);
 	}
 	
 }
