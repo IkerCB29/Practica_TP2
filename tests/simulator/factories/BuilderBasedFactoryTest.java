@@ -17,9 +17,9 @@ import simulator.model.MoveFirstStrategy;
 import simulator.model.NewCityRoadEvent;
 import simulator.model.NewInterCityRoadEvent;
 import simulator.model.NewJunctionEvent;
-import simulator.model.SetContClassEvent;
 import simulator.model.NewVehicleEvent;
 import simulator.model.RoundRobinStrategy;
+import simulator.model.SetContClassEvent;
 import simulator.model.SetWeatherEvent;
 
 class BuilderBasedFactoryTest {

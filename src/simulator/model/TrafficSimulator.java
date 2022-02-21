@@ -29,7 +29,6 @@ public class TrafficSimulator {
 		advanceRoads();
 	}
 
-	//TODO METER UN TRY CATCH
 	void executeEvents(){
 		List<Event> aux = new SortedArrayList<Event>();
 		for(Event v : events){
