@@ -138,7 +138,7 @@ public class Main {
 	}
 
 	private static void startBatchMode() throws IOException {
-		initFactories();
+		//initFactories();
 		TrafficSimulator ts = new TrafficSimulator();
 		Controller c = new Controller(ts, _eventsFactory);
 		InputStream is = new FileInputStream(_inFile);
