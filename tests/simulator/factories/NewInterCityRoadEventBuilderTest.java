@@ -62,8 +62,14 @@ class NewInterCityRoadEventBuilderTest {
 		ts.advance();
 
 		String s = "{\"time\":1,\"state\":{\"roads\":[{\"speedlimit\":120,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r1\"}],\"vehicles\":[],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"r1\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"}]}}";
+<<<<<<< HEAD
 
 		assertTrue(new JSONObject(s).similar(ts.report()));
+=======
+		String c = ts.report().toString();
+		assertTrue(new JSONObject(s).similar(new JSONObject(c)));
+		//assertTrue(new JSONObject(s).similar(ts.report()));
+>>>>>>> branch 'v1.0' of https://github.com/IkerCB29/Practica_TP2.git
 
 	}
 
