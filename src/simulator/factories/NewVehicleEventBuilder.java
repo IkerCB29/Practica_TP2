@@ -10,8 +10,10 @@ import simulator.model.NewVehicleEvent;
 
 public class NewVehicleEventBuilder extends Builder<Event>{
 
+	private final static String NEW_VEHICLE = "new_vehicle";
+	
 	public NewVehicleEventBuilder() {
-		super("new_vehicle");
+		super(NEW_VEHICLE);
 	}
 
 	@Override

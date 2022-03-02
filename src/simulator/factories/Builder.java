@@ -3,6 +3,7 @@ package simulator.factories;
 import org.json.JSONObject;
 
 public abstract class Builder<T> {
+	
 	protected String _type;
 
 	Builder(String type) {

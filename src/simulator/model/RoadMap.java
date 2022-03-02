@@ -11,6 +11,12 @@ import org.json.JSONObject;
 
 public class RoadMap {
 	
+	private final static String JUNCTION_IN_MAP = "junction is already in map";
+	private final static String ROAD_IN_MAP = "road is already in map";
+	private final static String INVALID_JUNCTION = "junction is not valid";
+	private final static String VEHICLE_IN_MAP = "vehicle is already in map";
+	private final static String NO_ROAD = "no road between junctions";
+	
 	private List<Junction> junList;
 	private List<Road> roadList;
 	private List<Vehicle> vehicleList;
@@ -28,26 +34,31 @@ public class RoadMap {
 	}
 
 	void addJunction(Junction j){
-		if(junMap.containsKey(j.getId())) throw new IllegalArgumentException();
+		if(junMap.containsKey(j.getId())) throw new IllegalArgumentException(j.getId() + " : " + JUNCTION_IN_MAP);
 
 		junList.add(j);
 		junMap.put(j.getId(), j);
 	}
 
 	void addRoad(Road r){
-		if(roadMap.containsKey(r.getId()) || !junMap.containsKey(r.getSrc().getId())  || !junMap.containsKey(r.getDest().getId()))
-			throw new IllegalArgumentException();
-		
+		if(roadMap.containsKey(r.getId()))
+			throw new IllegalArgumentException(r.getId() + " : " + ROAD_IN_MAP);
+		if(!junMap.containsKey(r.getSrc().getId()))
+			throw new IllegalArgumentException("Src junction : " + INVALID_JUNCTION);
+		if(!junMap.containsKey(r.getDest().getId()))
+			throw new IllegalArgumentException("Dest junction : " + INVALID_JUNCTION);
 		roadList.add(r);
 		roadMap.put(r.getId(), r);
 	}
 
 	void addVehicle(Vehicle v){
 
-		if(vehicleMap.containsKey(v.getId())) throw new IllegalArgumentException();
+		if(vehicleMap.containsKey(v.getId())) 
+			throw new IllegalArgumentException(v.getId() + " : " + VEHICLE_IN_MAP);
 		for(int i = 0; i < v.getItinerary().size() - 1; i++) {
 			if(v.getItinerary().get(i).roadTo(v.getItinerary().get(i+1)) == null)
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException(NO_ROAD + " " + v.getItinerary().get(i) + "-" +
+						v.getItinerary().get(i + 1));
 		}
 		vehicleList.add(v);
 		vehicleMap.put(v.getId(), v);

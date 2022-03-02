@@ -14,12 +14,15 @@ import simulator.model.TrafficSimulator;
 
 public class Controller {
 
+	private final static String NO_TRAFFIC_SIMULATOR = "Traffic simulator not initialized";
+	private final static String NO_EVENT_FACTORY = "Event factory not initialized";
+	
 	private TrafficSimulator trafficSimulator;
 	private Factory<Event> eventsFactory;
 
 	public Controller(TrafficSimulator sim, Factory<Event> eventsFactory){
-		if(sim == null) throw new IllegalArgumentException();
-		if(eventsFactory == null) throw new IllegalArgumentException();
+		if(sim == null) throw new IllegalArgumentException(NO_TRAFFIC_SIMULATOR );
+		if(eventsFactory == null) throw new IllegalArgumentException(NO_EVENT_FACTORY);
 		
 		trafficSimulator = sim;
 		this.eventsFactory = eventsFactory;

@@ -11,9 +11,9 @@ import simulator.model.SetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event>{
 
+	private final static String SET_CONT_CLASS = "set_cont_class";
 	public SetContClassEventBuilder() {
-		super("set_cont_class");
-		
+		super(SET_CONT_CLASS);
 	}
 
 	@Override

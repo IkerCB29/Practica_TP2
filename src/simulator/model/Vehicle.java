@@ -9,29 +9,18 @@ import org.json.*;
 public class Vehicle extends SimulatedObject{
 	
 	private static final String INVALID_CONT_CLASS = "contClass must be a value between 0 and 10";
-	
 	private static final String INVALID_ITINERARY = "itinerary must have at least 2 junctions";
-	
 	private static final String INVALID_STATUS_MOVE_ROAD = "vehicle status is not waiting neither pending";
 	
 	private List<Junction> itinerary;
-	
 	private int itineraryPos;
-	
 	private int maxSpeed;
-	
 	private int speed;
-	
 	private VehicleStatus status;
-	
 	private Road myRoad;
-	
 	private int location;
-	
 	private int contClass;
-	
 	private int totalCO2;
-	
 	private int distanceTraveled;
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {

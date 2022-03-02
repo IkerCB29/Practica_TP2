@@ -12,27 +12,17 @@ import org.json.JSONObject;
 public class Junction extends SimulatedObject{
 	
 	private static final String INVALID_POSITION = "coordinates aren't valid";
-	
 	private static final String INVALID_ROAD = "invalid road for the requested junction";
-	
 	private static final String NO_CURRENT_GREEN_ROAD = "none";
 	
 	private List<Road> srcRoads;
-	
 	private Map<Junction, Road> destRoads;
-	
 	private List<List<Vehicle>> qs;
-	
 	private Map<Road, List<Vehicle>> road_Queue;
-	
 	private int currGreen;
-	
 	private int lastSwitchingTime;
-	
 	private LightSwitchingStrategy lsStrategy;
-	
 	private DequeuingStrategy dqStrategy;
-	
 	private int xCoor, yCoor;
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy 

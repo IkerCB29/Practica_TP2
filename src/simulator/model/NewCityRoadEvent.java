@@ -1,6 +1,5 @@
 package simulator.model;
 
-
 public class NewCityRoadEvent extends NewRoadEvent{
 
 	public NewCityRoadEvent(int time, String id, String srcJun, String

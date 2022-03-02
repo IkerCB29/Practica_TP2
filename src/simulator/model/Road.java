@@ -12,25 +12,16 @@ import simulator.misc.SortedArrayList;
 public abstract class Road extends SimulatedObject {
 	
 	private static final String INVALID_LOCATION = "location must be 0";
-	
 	private static final String INVALID_SPEED = "speed must be 0";
 	
 	private Junction source, destination;
-	
 	protected int length;
-	
 	protected int maxSpeed;
-	
 	protected int speedLimit;
-	
 	protected int contLimit;
-	
 	protected Weather weather;
-	
 	protected int totalCO2;
-	
 	private Comparator<Vehicle> cmp;
-	
 	private List<Vehicle> vehicles;
 	
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,

@@ -12,8 +12,10 @@ import simulator.model.Weather;
 
 public class SetWeatherEventBuilder extends Builder<Event>{
 
+	private final static String SET_WEATHER = "set_weather";
+	
 	public SetWeatherEventBuilder() {
-		super("set_weather");
+		super(SET_WEATHER);
 	}
 
 	@Override

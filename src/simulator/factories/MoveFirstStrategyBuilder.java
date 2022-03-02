@@ -7,7 +7,7 @@ import simulator.model.MoveFirstStrategy;
 
 public class MoveFirstStrategyBuilder extends Builder<DequeuingStrategy>{
 
-	private static final String MOVE_FIRST_DQS = "move_first_dqs";
+	private final static String MOVE_FIRST_DQS = "move_first_dqs";
 	
 	public MoveFirstStrategyBuilder() {
 		super(MOVE_FIRST_DQS);

@@ -10,11 +10,13 @@ import simulator.model.NewJunctionEvent;
 
 public class NewJunctionEventBuilder extends Builder<Event>{
 
+	private final static String NEW_JUNCTION = "new_junction";
+	
 	private Factory<LightSwitchingStrategy> lssF;
 	private Factory<DequeuingStrategy> dqF;
 
 	public NewJunctionEventBuilder(Factory<LightSwitchingStrategy> lssFactory, Factory<DequeuingStrategy> dqsFactory) {
-		super("new_junction");
+		super(NEW_JUNCTION);
 		lssF = lssFactory;
 		dqF = dqsFactory;
 	}

@@ -5,8 +5,10 @@ import simulator.model.NewInterCityRoadEvent;
 
 public class NewInterCityRoadEventBuilder extends NewRoadEventBuilder{
 
+	private final static String NEW_INTER_CITY_ROAD = "new_inter_city_road";
+	
 	public NewInterCityRoadEventBuilder() {
-		super("new_inter_city_road");
+		super(NEW_INTER_CITY_ROAD);
 	}
 
 	@Override
