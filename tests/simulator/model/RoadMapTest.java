@@ -40,38 +40,6 @@ class RoadMapTest {
 		map.addVehicle(v3);
 		map.addVehicle(v4);
 	
-		// check the getters of simulated objects works fine
-<<<<<<< HEAD
-		assertTrue(map.getJuntion("j1").equals(j1));
-		assertTrue(map.getJuntion("j2").equals(j2));
-		assertTrue(map.getJuntion("j3").equals(j3));
-
-		assertTrue(map.getRoad("r1").equals(r1));
-		assertTrue(map.getRoad("r2").equals(r2));
-		
-		assertTrue(map.getVehicle("v1").equals(v1));
-		assertTrue(map.getVehicle("v2").equals(v2));
-		assertTrue(map.getVehicle("v3").equals(v3));
-		
-		// check that simulated objects are kept in the insertion order
-		List<Junction> lj = map.getJunctions();
-		assertEquals(j1, lj.get(0));
-		assertEquals(j2, lj.get(1));
-		assertEquals(j3, lj.get(2));
-
-		List<Road> lr = map.getRoads();
-		assertEquals(r1,lr.get(0));
-		assertEquals(r2,lr.get(1));
-
-		List<Vehicle> lv = map.getVehilces();
-		assertEquals(v1, lv.get(0));
-		assertEquals(v2, lv.get(1));
-		assertEquals(v3, lv.get(2));
-
-		// check the report
-		String s = "{\"roads\":[{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r1\"},{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r2\"}],\"vehicles\":[{\"distance\":0,\"co2\":0,\"id\":\"v1\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v2\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v3\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v4\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"}],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r2\",\"vehicles\":[]}],\"id\":\"j3\"}]}";
-		assertTrue( new JSONObject(s).similar(map.report()));
-=======
 		assertTrue(map.getJunction("j1").equals(j1));
 		assertTrue(map.getJunction("j2").equals(j2));
 		assertTrue(map.getJunction("j3").equals(j3));
@@ -100,11 +68,8 @@ class RoadMapTest {
 
 		// check the report
 		String s = "{\"roads\":[{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r1\"},{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r2\"}],\"vehicles\":[{\"distance\":0,\"co2\":0,\"id\":\"v1\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v2\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v3\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"},{\"distance\":0,\"co2\":0,\"id\":\"v4\",\"class\":1,\"speed\":0,\"status\":\"PENDING\"}],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"},{\"green\":\"none\",\"queues\":[{\"road\":\"r2\",\"vehicles\":[]}],\"id\":\"j3\"}]}";
-		String c = map.report().toString();
-		assertTrue( new JSONObject(s).similar(new JSONObject(c)));
-		//assertTrue( new JSONObject(s).similar(map.report()));
->>>>>>> branch 'v1.0' of https://github.com/IkerCB29/Practica_TP2.git
-	
+
+		assertTrue( new JSONObject(s).similar(map.report()));
 	}
 
 	@Test

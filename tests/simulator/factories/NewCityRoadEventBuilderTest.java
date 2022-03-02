@@ -42,7 +42,6 @@ class NewCityRoadEventBuilderTest {
 		ts.addEvent(jeb.createInstance(new JSONObject(inputJson2)));
 
 		return ts;
-
 	}
 
 	@Test
@@ -62,21 +61,12 @@ class NewCityRoadEventBuilderTest {
 		ts.advance();
 
 		String s = "{\"time\":1,\"state\":{\"roads\":[{\"speedlimit\":120,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[],\"id\":\"r1\"}],\"vehicles\":[],\"junctions\":[{\"green\":\"none\",\"queues\":[],\"id\":\"j1\"},{\"green\":\"r1\",\"queues\":[{\"road\":\"r1\",\"vehicles\":[]}],\"id\":\"j2\"}]}}";
-<<<<<<< HEAD
 
 		assertTrue(new JSONObject(s).similar(ts.report()));
-=======
-		String c = ts.report().toString();
-		assertTrue(new JSONObject(s).similar(new JSONObject(c)));
-		//assertTrue(new JSONObject(s).similar(ts.report()));
-
->>>>>>> branch 'v1.0' of https://github.com/IkerCB29/Practica_TP2.git
-
 	}
 
 	@Test
 	void test_2() {
-
 		// error in src junction
 		String inputJson = "{\n" + "	  \"type\" : \"new_city_road\",\n" + "  	  \"data\" : {\n"
 				+ "    	  \"time\"     : 1,\n" + "    	   \"id\"       : \"r1\",\n"
@@ -87,7 +77,6 @@ class NewCityRoadEventBuilderTest {
 
 		NewCityRoadEventBuilder reb = new NewCityRoadEventBuilder();
 		assertThrows(Exception.class, () -> reb.createInstance(new JSONObject(inputJson)));
-
 	}
 
 	@Test
@@ -97,17 +86,15 @@ class NewCityRoadEventBuilderTest {
 
 		NewCityRoadEventBuilder reb = new NewCityRoadEventBuilder();
 		assertThrows(Exception.class, () -> reb.createInstance(new JSONObject(inputJson)));
-
 	}
+	
 	@Test
 	void test_4() {
-
 		// if type is not new_city_road it returns null
 		String inputJson = "{ \"type\" : \"bla\" }";
 
 		NewCityRoadEventBuilder reb = new NewCityRoadEventBuilder();
 		assertNull(reb.createInstance(new JSONObject(inputJson)));
-
 	}
 
 }

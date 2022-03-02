@@ -42,11 +42,13 @@ public class RoadMap {
 		roadMap.put(r.getId(), r);
 	}
 
-	//TODO Añadir comprobacion del punto 2 de esta funcion
 	void addVehicle(Vehicle v){
 
 		if(vehicleMap.containsKey(v.getId())) throw new IllegalArgumentException();
-
+		for(int i = 0; i < v.getItinerary().size() - 1; i++) {
+			if(v.getItinerary().get(i).roadTo(v.getItinerary().get(i+1)) == null)
+				throw new IllegalArgumentException();
+		}
 		vehicleList.add(v);
 		vehicleMap.put(v.getId(), v);
 	}
