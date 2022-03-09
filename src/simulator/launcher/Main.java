@@ -34,6 +34,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 	
@@ -148,6 +149,9 @@ public class Main {
 		else
 			os = System.out;
 		c.run(ticks, os);
+		
+		//Modo guarro
+		new MainWindow(c);
 	}
 
 	private static void start(String[] args) throws IOException {

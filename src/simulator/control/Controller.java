@@ -28,7 +28,6 @@ public class Controller {
 		this.eventsFactory = eventsFactory;
 	}
 
-	//TODO: Mirar lo de la excepcion
 	public void loadEvents(InputStream in){
 		JSONObject jo = new JSONObject(new JSONTokener(in));
 		JSONArray ja = jo.getJSONArray("events");
@@ -37,7 +36,6 @@ public class Controller {
 		}
 	}
 
-	//TODO, METER EN EL OUT revisar
 	public void run(int n, OutputStream out){
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < n; i++){
