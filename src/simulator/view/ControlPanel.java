@@ -64,17 +64,17 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
-		
 		JToolBar controls = new JToolBar();
-		controls.setEnabled(false);
 		
 		createLoadEventsButton();
 		controls.add(loadEventsButton);
+		controls.addSeparator();
 		
 		createChangeContaminationButton();
 		controls.add(changeContaminationButton);
 		createChangeWeatherConditionButton();
 		controls.add(changeWeatherConditionButton);
+		controls.addSeparator();
 		
 		createStartButton();
 		controls.add(startButton);
@@ -83,8 +83,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		createTicksButton();
 		controls.add(new JLabel(" Ticks: "));
 		controls.add(ticksButton);
-		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		
+		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		createExitButton();
 		controls.add(exitButton);
 		
@@ -118,7 +118,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeContaminationButton.setIcon(new ImageIcon("resources\\icons\\co2class.png"));
 	}
 	
-	private void createChangeWeatherConditionButton(){
+	private void createChangeWeatherConditionButton() {
 		changeWeatherConditionButton = new JButton();
 		changeWeatherConditionButton.setIcon(new ImageIcon("resources\\icons\\weather.png"));
 	}
@@ -134,8 +134,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void createTicksButton() {
-		ticksButton = new JSpinner(new SpinnerNumberModel(1,1,100,1));
-		ticksButton.setSize(40,40);
+		ticksButton = new JSpinner(new SpinnerNumberModel(1,1,99999,1));
+		ticksButton.setMaximumSize(new Dimension(100,50));
 	}
 	
 	private void createExitButton() {
