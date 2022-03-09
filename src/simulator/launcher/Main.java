@@ -156,20 +156,12 @@ public class Main {
 		startBatchMode();
 	}
 
-	// example command lines:
-	//
-	// -i resources/examples/ex1.json
-	// -i resources/examples/ex1.json -t 300
-	// -i resources/examples/ex1.json -o resources/examples/ex1.out.json
-	// --help
-
 	public static void main(String[] args) {
 		try {
 			start(args);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
