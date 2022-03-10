@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,19 +29,33 @@ import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
+	private final static String LOAD_EVENTS_ICON_DIR = "resources\\icons\\open.png";
+	private final static String CHANGE_CONT_ICON_DIR = "resources\\icons\\co2class.png";
+	private final static String CHANGE_WEATHER_ICON_DIR = "resources\\icons\\weather.png";
+	private final static String START_ICON_DIR = "resources\\icons\\run.png";
+	private final static String STOP_ICON_DIR = "resources\\icons\\stop.png";
+	private final static String EXIT_ICON_DIR = "resources\\icons\\exit.png";
+	
+	private final static int TICKS_INI_VALUE = 1;
+	private final static int TICKS_MIN_VALUE = 1;
+	private final static int TICKS_MAX_VALUE = 99999;
+	private final static int TICKS_INCREASE_VALUE = 1;
+	
 	private Controller ctrl;
-	private JButton loadEventsButton;
-	private JButton changeContaminationButton;
-	private JButton changeWeatherConditionButton;
-	private JButton startButton;
-	private JButton stopButton;
-	private JSpinner ticksButton;
-	private JButton exitButton;
+	private JFrame frame;
+	private JButton loadEvents;
+	private JButton changeContamination;
+	private JButton changeWeatherCondition;
+	private JButton start;
+	private JButton stop;
+	private JSpinner ticks;
+	private JButton exit;
 	
 	private static final long serialVersionUID = -4423199850333010661L;
 
-	public ControlPanel(Controller c) {
+	public ControlPanel(Controller c, JFrame f) {
 		ctrl = c;
+		frame = f;
 		initGUI();
 	}
 	
@@ -65,36 +80,37 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
 		JToolBar controls = new JToolBar();
+		controls.setFloatable(false);
 		
 		createLoadEventsButton();
-		controls.add(loadEventsButton);
+		controls.add(loadEvents);
 		controls.addSeparator();
 		
 		createChangeContaminationButton();
-		controls.add(changeContaminationButton);
+		controls.add(changeContamination);
 		createChangeWeatherConditionButton();
-		controls.add(changeWeatherConditionButton);
+		controls.add(changeWeatherCondition);
 		controls.addSeparator();
 		
 		createStartButton();
-		controls.add(startButton);
+		controls.add(start);
 		createStopButton();
-		controls.add(stopButton);
+		controls.add(stop);
 		createTicksButton();
 		controls.add(new JLabel(" Ticks: "));
-		controls.add(ticksButton);
-		
+		controls.add(ticks);
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
+		
 		createExitButton();
-		controls.add(exitButton);
+		controls.add(exit);
 		
 		this.add(controls, BorderLayout.CENTER);
 	}
 		
 	private void createLoadEventsButton() {
-		loadEventsButton = new JButton();
-		loadEventsButton.setIcon(new ImageIcon("resources\\icons\\open.png"));
-		loadEventsButton.addActionListener(new ActionListener() {
+		loadEvents = new JButton();
+		loadEvents.setIcon(new ImageIcon(LOAD_EVENTS_ICON_DIR));
+		loadEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -112,36 +128,48 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			}
 		});
 	}
-	
+
 	private void createChangeContaminationButton() {
-		changeContaminationButton = new JButton();
-		changeContaminationButton.setIcon(new ImageIcon("resources\\icons\\co2class.png"));
+		changeContamination = new JButton();
+		changeContamination.setIcon(new ImageIcon(CHANGE_CONT_ICON_DIR));
+		changeContamination.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ChangeCO2ClassDialog(ctrl, frame);
+			}
+		});
 	}
 	
 	private void createChangeWeatherConditionButton() {
-		changeWeatherConditionButton = new JButton();
-		changeWeatherConditionButton.setIcon(new ImageIcon("resources\\icons\\weather.png"));
+		changeWeatherCondition = new JButton();
+		changeWeatherCondition.setIcon(new ImageIcon(CHANGE_WEATHER_ICON_DIR));
 	}
 	
 	private void createStartButton() {
-		startButton = new JButton();
-		startButton.setIcon(new ImageIcon("resources\\icons\\run.png"));
+		start = new JButton();
+		start.setIcon(new ImageIcon(START_ICON_DIR));
 	}
 	
 	private void createStopButton() {
-		stopButton = new JButton();
-		stopButton.setIcon(new ImageIcon("resources\\icons\\stop.png"));
+		stop = new JButton();
+		stop.setIcon(new ImageIcon(STOP_ICON_DIR));
 	}
 	
 	private void createTicksButton() {
-		ticksButton = new JSpinner(new SpinnerNumberModel(1,1,99999,1));
-		ticksButton.setMaximumSize(new Dimension(100,50));
+		ticks = new JSpinner(
+				new SpinnerNumberModel(
+						TICKS_INI_VALUE,
+						TICKS_MIN_VALUE,
+						TICKS_MAX_VALUE,
+						TICKS_INCREASE_VALUE
+		));
+		ticks.setMaximumSize(new Dimension(100,30));
 	}
 	
 	private void createExitButton() {
-		exitButton = new JButton();
-		exitButton.setIcon(new ImageIcon("resources\\icons\\exit.png"));
-		exitButton.addActionListener(new ActionListener() {
+		exit = new JButton();
+		exit.setIcon(new ImageIcon(EXIT_ICON_DIR));
+		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int action = JOptionPane.showConfirmDialog(
