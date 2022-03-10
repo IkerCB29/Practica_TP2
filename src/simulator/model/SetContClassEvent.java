@@ -9,7 +9,6 @@ public class SetContClassEvent extends Event{
 	private final static String NULL_VEHICLE = "vehicle is null";
 	
 	private List<Pair<String, Integer>> cs;
-	//TODO MENSAJE
 	public SetContClassEvent(int time, List<Pair<String, Integer>> cs){
 		super(time);
 		if(cs == null) throw new IllegalArgumentException(NULL_STRING_CONTAMINATION_LIST);
@@ -27,5 +26,8 @@ public class SetContClassEvent extends Event{
 			v.setContClass(p.getSecond());
 		}		
 	}
-	
+	@Override
+	public String toString() {
+		return "New SetContClass";
+	}
 }
