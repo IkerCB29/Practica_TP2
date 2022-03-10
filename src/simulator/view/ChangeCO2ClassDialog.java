@@ -3,13 +3,19 @@ package simulator.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerNumberModel;
 
 import simulator.control.Controller;
 
@@ -18,15 +24,24 @@ public class ChangeCO2ClassDialog extends JDialog{
 	private final static String TITLE = "Change CO2 Class";
 	private final static boolean MODAL = true;
 	
-	private final static String DESCRIPTION = "Schedule an event to change "
+	private final static String DESCRIPTION = " Schedule an event to change "
 			+ "the CO2 class of a vehicle after a given number of\n"
-			+ "simulation ticks from now";
+			+ " simulation ticks from now";
 	
-	private final static int WIDTH = 500;
+	private final static int TICKS_INI_VALUE = 1;
+	private final static int TICKS_MIN_VALUE = 1;
+	private final static int TICKS_MAX_VALUE = 99999;
+	private final static int TICKS_INCREASE_VALUE = 1;
+	
+	private final static int WIDTH = 460;
 	private final static int HEIGHT = 200;
 	
 	private Controller ctrl;
 	private JSpinner vehicleSelection;
+	private JSpinner CO2Selection;
+	private JSpinner ticksSelection;
+	private JButton buildEvent;
+	private JButton cancel;
 	
 	private static final long serialVersionUID = -8875771187454739902L;
 	
@@ -43,10 +58,29 @@ public class ChangeCO2ClassDialog extends JDialog{
 		description.setEditable(false);
 		this.add(description, BorderLayout.NORTH);
 		
-		JPanel selectOptions = new JPanel();
+		JToolBar selectOptions = new JToolBar();
+		selectOptions.setFloatable(false);
+		
 		createVehicleSelection();
+		selectOptions.add(new JLabel (" Vehicle: "));
+		selectOptions.add(vehicleSelection);
+		
+		createCO2Selection();
+		selectOptions.add(new JLabel ("  CO2: "));
+		selectOptions.add(CO2Selection);
+		
+		createTicksSelection();
+		selectOptions.add(new JLabel ("  Ticks: "));
+		selectOptions.add(ticksSelection);
 		
 		this.add(selectOptions, BorderLayout.CENTER);
+		
+		JPanel buttons = new JPanel();
+		createCancelButton();
+		buttons.add(cancel);
+		createBuildEventButton();
+		buttons.add(buildEvent);
+		this.add(buttons, BorderLayout.SOUTH);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.pack();
@@ -57,7 +91,45 @@ public class ChangeCO2ClassDialog extends JDialog{
 	}
 	
 	private void createVehicleSelection() {
-		
+		vehicleSelection = new JSpinner(
+				new SpinnerListModel(
+						ctrl.getVehicles()
+		));
+		vehicleSelection.setMaximumSize(new Dimension(100,30));
+	}
+	
+	private void createCO2Selection() {
+		CO2Selection = new JSpinner(
+				new SpinnerNumberModel(
+						1,1,10,1
+		));
+		CO2Selection.setMaximumSize(new Dimension(100,30));
+	}
+	
+	private void createTicksSelection() {
+		ticksSelection = new JSpinner(
+				new SpinnerNumberModel(
+						TICKS_INI_VALUE,
+						TICKS_MIN_VALUE,
+						TICKS_MAX_VALUE,
+						TICKS_INCREASE_VALUE
+		));
+		ticksSelection.setMaximumSize(new Dimension(100,30));
+	}
+	
+	private void createBuildEventButton() {
+		buildEvent = new JButton("OK");
+	}
+	
+	private void createCancelButton() {
+		cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ChangeCO2ClassDialog.this.setVisible(false);
+				ChangeCO2ClassDialog.this.dispose();
+			}
+		});
 	}
 	
 }

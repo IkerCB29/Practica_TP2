@@ -23,9 +23,24 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		ticks = INITIAL_TICKS;
 	}
 
+	@Override
+	public void addObserver(TrafficSimObserver o) {		
+		observers.add(o);
+		
+		for(TrafficSimObserver a : observers ) {
+			a.onRegister(roads, events, ticks);
+		}
+		
+	}
+
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		observers.remove(o);
+	}
+
 	public void addEvent(Event e){
 		events.add(e);
-		for(var a : observers ) {
+		for(TrafficSimObserver a : observers ) {
 			a.onEventAdded(roads, events, e, ticks);
 		}
 		
@@ -34,7 +49,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	public void advance(){
 		ticks++;
 		
-		for(var a : observers ) {
+		for(TrafficSimObserver a : observers ) {
 			a.onAdvanceStart(roads, events, ticks);
 		}
 		
@@ -42,7 +57,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		advanceJunctions();
 		advanceRoads();
 		
-		for(var a : observers ) {
+		for(TrafficSimObserver a : observers ) {
 			a.onAdvanceEnd(roads, events, ticks);
 		}
 	}
@@ -75,7 +90,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		events.clear();
 		ticks = INITIAL_TICKS;
 		
-		for(var a : observers ) {
+		for(TrafficSimObserver a : observers ) {
 			a.onReset(roads, events, ticks);
 		}
 	}
@@ -87,19 +102,9 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		jo.put("state", roads.report());
 		return jo;
 	}
-
-	@Override
-	public void addObserver(TrafficSimObserver o) {		
-		observers.add(o);
-		
-		for(var a : observers ) {
-			a.onRegister(roads, events, ticks);
-		}
-		
+	
+	public List<Vehicle> getVehicles(){
+		return roads.getVehicles();
 	}
-
-	@Override
-	public void removeObserver(TrafficSimObserver o) {
-		observers.remove(o);
-	}
+	
 }

@@ -3,6 +3,7 @@ package simulator.control;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import simulator.factories.Factory;
 import simulator.model.Event;
 import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
+import simulator.model.Vehicle;
 
 public class Controller {
 
@@ -59,5 +61,9 @@ public class Controller {
 	
 	public void removeObserver(TrafficSimObserver o) {
 		trafficSimulator.removeObserver(o);
+	}
+	
+	public List<Vehicle> getVehicles(){
+		return trafficSimulator.getVehicles();
 	}
 }

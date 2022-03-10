@@ -48,7 +48,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JButton changeWeatherCondition;
 	private JButton start;
 	private JButton stop;
-	private JSpinner ticks;
+	private JSpinner ticksSelection;
 	private JButton exit;
 	
 	private static final long serialVersionUID = -4423199850333010661L;
@@ -98,7 +98,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		controls.add(stop);
 		createTicksButton();
 		controls.add(new JLabel(" Ticks: "));
-		controls.add(ticks);
+		controls.add(ticksSelection);
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		createExitButton();
@@ -120,9 +120,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 						File file = fileChooser.getSelectedFile();
 						ctrl.reset();
 						ctrl.loadEvents(new FileInputStream(file));
-						} 
-					catch (FileNotFoundException err) {
-						err.printStackTrace();
+					} 
+					catch (FileNotFoundException fileErr) {
+						JOptionPane.showMessageDialog(null, "File not found");
+					}
+					catch (Exception err) {
+						JOptionPane.showMessageDialog(null, "Error loading events. Check file is correct");
+						ctrl.reset();
 					}
 				}
 			}
@@ -156,14 +160,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void createTicksButton() {
-		ticks = new JSpinner(
+		ticksSelection = new JSpinner(
 				new SpinnerNumberModel(
 						TICKS_INI_VALUE,
 						TICKS_MIN_VALUE,
 						TICKS_MAX_VALUE,
 						TICKS_INCREASE_VALUE
 		));
-		ticks.setMaximumSize(new Dimension(100,30));
+		ticksSelection.setMaximumSize(new Dimension(100,30));
 	}
 	
 	private void createExitButton() {
