@@ -26,7 +26,7 @@ public class MainWindow extends JFrame{
 		this.setContentPane(mainPanel);
 		
 		mainPanel.add(new ControlPanel(ctrl, this), BorderLayout.PAGE_START);
-		mainPanel.add(new JPanel(), BorderLayout.PAGE_END);
+		mainPanel.add(new StatusBar(ctrl), BorderLayout.PAGE_END);
 		
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();

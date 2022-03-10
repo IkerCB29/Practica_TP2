@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -149,15 +151,26 @@ public class Main {
 		else
 			os = System.out;
 		c.run(ticks, os);
-		
-		//Modo guarro
+
 		new MainWindow(c);
+	}
+	
+	private static void startGUIMode() throws IOException {
+		TrafficSimulator ts = new TrafficSimulator();
+		Controller c = new Controller(ts, _eventsFactory);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MainWindow(c);
+			}
+		});
 	}
 
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
 		startBatchMode();
+		//startGUIMode();
 	}
 
 	public static void main(String[] args) {

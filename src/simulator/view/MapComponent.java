@@ -108,7 +108,6 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 			if (v.getStatus() != VehicleStatus.ARRIVED) {
 
 				Road r = v.getRoad();
-	
 				
 				// The calculation below compute the coordinate (vX,vY) of the vehicle on the
 				// corresponding road. It is calculated relatively to the length of the road, and

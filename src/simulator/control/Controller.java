@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.factories.Factory;
+import simulator.misc.Pair;
 import simulator.model.Event;
+import simulator.model.SetContClassEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
 import simulator.model.Vehicle;
@@ -66,4 +68,11 @@ public class Controller {
 	public List<Vehicle> getVehicles(){
 		return trafficSimulator.getVehicles();
 	}
+	
+	public void addChangeCO2Event(int time, List<Pair<String, Integer>> cs) {
+		trafficSimulator.addEvent(
+				new SetContClassEvent(time + trafficSimulator.getTicks(), cs)
+		);
+	}
+	
 }

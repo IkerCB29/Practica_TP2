@@ -43,7 +43,10 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		for(TrafficSimObserver a : observers ) {
 			a.onEventAdded(roads, events, e, ticks);
 		}
-		
+	}
+	
+	public int getTicks() {
+		return ticks;
 	}
 	
 	public void advance(){
