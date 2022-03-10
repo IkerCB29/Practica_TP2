@@ -3,14 +3,19 @@ package simulator.control;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import simulator.factories.Factory;
+import simulator.misc.Pair;
 import simulator.model.Event;
+import simulator.model.SetContClassEvent;
+import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
+import simulator.model.Vehicle;
 
 public class Controller {
 
@@ -51,4 +56,23 @@ public class Controller {
 	public void reset(){
 		trafficSimulator.reset();
 	}
+	
+	public void addObserver(TrafficSimObserver o) {		
+		trafficSimulator.addObserver(o);
+	}
+	
+	public void removeObserver(TrafficSimObserver o) {
+		trafficSimulator.removeObserver(o);
+	}
+	
+	public List<Vehicle> getVehicles(){
+		return trafficSimulator.getVehicles();
+	}
+	
+	public void addChangeCO2Event(int time, List<Pair<String, Integer>> cs) {
+		trafficSimulator.addEvent(
+				new SetContClassEvent(time + trafficSimulator.getTicks(), cs)
+		);
+	}
+	
 }
