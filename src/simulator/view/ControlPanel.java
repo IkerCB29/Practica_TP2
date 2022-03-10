@@ -29,13 +29,15 @@ import simulator.model.TrafficSimObserver;
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 	private Controller ctrl;
-	private JButton loadEventsButton;
-	private JButton changeContaminationButton;
-	private JButton changeWeatherConditionButton;
-	private JButton startButton;
-	private JButton stopButton;
-	private JSpinner ticksButton;
-	private JButton exitButton;
+	private JButton loadEvents;
+	private JButton changeContamination;
+	private JButton changeWeatherCondition;
+	private JButton start;
+	private JButton stop;
+	private JSpinner ticks;
+	private JButton exit;
+	private ChangeCO2ClassDialog changeCO2Class;
+	
 	
 	private static final long serialVersionUID = -4423199850333010661L;
 
@@ -64,37 +66,40 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
+		
+		changeCO2Class = new ChangeCO2ClassDialog(ctrl);
+		
 		JToolBar controls = new JToolBar();
 		
 		createLoadEventsButton();
-		controls.add(loadEventsButton);
+		controls.add(loadEvents);
 		controls.addSeparator();
 		
 		createChangeContaminationButton();
-		controls.add(changeContaminationButton);
+		controls.add(changeContamination);
 		createChangeWeatherConditionButton();
-		controls.add(changeWeatherConditionButton);
+		controls.add(changeWeatherCondition);
 		controls.addSeparator();
 		
 		createStartButton();
-		controls.add(startButton);
+		controls.add(start);
 		createStopButton();
-		controls.add(stopButton);
+		controls.add(stop);
 		createTicksButton();
 		controls.add(new JLabel(" Ticks: "));
-		controls.add(ticksButton);
+		controls.add(ticks);
 		
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		createExitButton();
-		controls.add(exitButton);
+		controls.add(exit);
 		
 		this.add(controls, BorderLayout.CENTER);
 	}
 		
 	private void createLoadEventsButton() {
-		loadEventsButton = new JButton();
-		loadEventsButton.setIcon(new ImageIcon("resources\\icons\\open.png"));
-		loadEventsButton.addActionListener(new ActionListener() {
+		loadEvents = new JButton();
+		loadEvents.setIcon(new ImageIcon("resources\\icons\\open.png"));
+		loadEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -114,34 +119,40 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void createChangeContaminationButton() {
-		changeContaminationButton = new JButton();
-		changeContaminationButton.setIcon(new ImageIcon("resources\\icons\\co2class.png"));
+		changeContamination = new JButton();
+		changeContamination.setIcon(new ImageIcon("resources\\icons\\co2class.png"));
+		changeContamination.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeCO2Class.setVisible(!changeCO2Class.isVisible());
+			}
+		});
 	}
 	
 	private void createChangeWeatherConditionButton() {
-		changeWeatherConditionButton = new JButton();
-		changeWeatherConditionButton.setIcon(new ImageIcon("resources\\icons\\weather.png"));
+		changeWeatherCondition = new JButton();
+		changeWeatherCondition.setIcon(new ImageIcon("resources\\icons\\weather.png"));
 	}
 	
 	private void createStartButton() {
-		startButton = new JButton();
-		startButton.setIcon(new ImageIcon("resources\\icons\\run.png"));
+		start = new JButton();
+		start.setIcon(new ImageIcon("resources\\icons\\run.png"));
 	}
 	
 	private void createStopButton() {
-		stopButton = new JButton();
-		stopButton.setIcon(new ImageIcon("resources\\icons\\stop.png"));
+		stop = new JButton();
+		stop.setIcon(new ImageIcon("resources\\icons\\stop.png"));
 	}
 	
 	private void createTicksButton() {
-		ticksButton = new JSpinner(new SpinnerNumberModel(1,1,99999,1));
-		ticksButton.setMaximumSize(new Dimension(100,50));
+		ticks= new JSpinner(new SpinnerNumberModel(1,1,99999,1));
+		ticks.setMaximumSize(new Dimension(100,50));
 	}
 	
 	private void createExitButton() {
-		exitButton = new JButton();
-		exitButton.setIcon(new ImageIcon("resources\\icons\\exit.png"));
-		exitButton.addActionListener(new ActionListener() {
+		exit = new JButton();
+		exit.setIcon(new ImageIcon("resources\\icons\\exit.png"));
+		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int action = JOptionPane.showConfirmDialog(
