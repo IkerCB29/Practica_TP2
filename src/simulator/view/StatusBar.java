@@ -1,7 +1,9 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import simulator.control.Controller;
@@ -14,9 +16,12 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 	private static final long serialVersionUID = -7853057030893328962L;
 
 	private Controller ctrl;
+	private JLabel timeValue;
+	private JLabel eventInfo;
 	
 	public StatusBar(Controller c) {
 		ctrl = c;
+		initGUI();
 	}
 	
 	@Override
@@ -53,6 +58,21 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 	public void onError(String err) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void initGUI() {
+		this.setLayout(new BorderLayout());
+		
+		JPanel timeInfo = new JPanel();
+		JLabel timeText = new JLabel(" Time: ");
+		timeInfo .add(timeText);
+		timeValue = new JLabel("70");
+		timeInfo .add(timeValue);
+
+		this.add(timeInfo, BorderLayout.WEST);
+		
+		eventInfo = new JLabel("La informacion del evento  ");
+		this.add(eventInfo, BorderLayout.EAST);
 	}
 
 }
