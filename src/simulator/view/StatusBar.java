@@ -57,7 +57,6 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 	@Override
 	public void onError(String err) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void initGUI() {
@@ -65,9 +64,9 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 		
 		JPanel timeInfo = new JPanel();
 		JLabel timeText = new JLabel(" Time: ");
-		timeInfo .add(timeText);
+		timeInfo.add(timeText);
 		timeValue = new JLabel("70");
-		timeInfo .add(timeValue);
+		timeInfo.add(timeValue);
 
 		this.add(timeInfo, BorderLayout.WEST);
 		
