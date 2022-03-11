@@ -12,10 +12,13 @@ import org.json.JSONTokener;
 import simulator.factories.Factory;
 import simulator.misc.Pair;
 import simulator.model.Event;
+import simulator.model.Road;
 import simulator.model.SetContClassEvent;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
 import simulator.model.Vehicle;
+import simulator.model.Weather;
 
 public class Controller {
 
@@ -69,9 +72,19 @@ public class Controller {
 		return trafficSimulator.getVehicles();
 	}
 	
+	public List<Road> getRoads(){
+		return trafficSimulator.getRoads();
+	}
+	
 	public void addChangeCO2Event(int time, List<Pair<String, Integer>> cs) {
 		trafficSimulator.addEvent(
 				new SetContClassEvent(time + trafficSimulator.getTicks(), cs)
+		);
+	}
+	
+	public void addChangeWeatherEvent(int time, List<Pair<String, Weather>> ws) {
+		trafficSimulator.addEvent(
+				new SetWeatherEvent(time + trafficSimulator.getTicks(), ws)
 		);
 	}
 	

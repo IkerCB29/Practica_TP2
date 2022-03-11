@@ -33,7 +33,7 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	private final static int WIDTH = 460;
 	private final static int HEIGHT = 200;
 	
-	private static final long serialVersionUID = 3201187660527024578L;
+	private final static long serialVersionUID = 3201187660527024578L;
 	
 	protected Controller ctrl;
 	
@@ -46,6 +46,7 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	public ChangeConditionDialog(Controller c, JFrame f) {
 		super(f, true);
 		ctrl = c;
+		c.addObserver(this);
 		initGUI();
 	}
 	

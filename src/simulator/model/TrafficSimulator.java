@@ -2,7 +2,6 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.json.JSONObject;
 import simulator.misc.SortedArrayList;
@@ -108,6 +107,10 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	
 	public List<Vehicle> getVehicles(){
 		return roads.getVehicles();
+	}
+	
+	public List<Road> getRoads(){
+		return roads.getRoads();
 	}
 	
 }

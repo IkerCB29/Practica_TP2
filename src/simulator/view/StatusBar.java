@@ -15,19 +15,32 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 
 	private static final long serialVersionUID = -7853057030893328962L;
 
-	private Controller ctrl;
 	private JLabel timeValue;
 	private JLabel eventInfo;
 	
 	public StatusBar(Controller c) {
-		ctrl = c;
 		initGUI();
+		c.addObserver(this);
+	}
+	
+	private void initGUI() {
+		this.setLayout(new BorderLayout());
+		
+		JPanel timeInfo = new JPanel();
+		JLabel timeText = new JLabel(" Time: ");
+		timeInfo.add(timeText);
+		timeValue = new JLabel("0");
+		timeInfo.add(timeValue);
+
+		this.add(timeInfo, BorderLayout.WEST);
+		
+		eventInfo = new JLabel();
+		this.add(eventInfo, BorderLayout.EAST);
 	}
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		timeValue.setText(Integer.toString(time));
 	}
 
 	@Override
@@ -38,40 +51,16 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		eventInfo.setText("Event added (" + e.toString() + ")  ");
 	}
 
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onReset(RoadMap map, List<Event> events, int time) {}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onRegister(RoadMap map, List<Event> events, int time) {}
 
 	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-	}
-	
-	private void initGUI() {
-		this.setLayout(new BorderLayout());
-		
-		JPanel timeInfo = new JPanel();
-		JLabel timeText = new JLabel(" Time: ");
-		timeInfo.add(timeText);
-		timeValue = new JLabel("70");
-		timeInfo.add(timeValue);
-
-		this.add(timeInfo, BorderLayout.WEST);
-		
-		eventInfo = new JLabel("La informacion del evento  ");
-		this.add(eventInfo, BorderLayout.EAST);
-	}
+	public void onError(String err) {}
 
 }

@@ -20,7 +20,6 @@ import simulator.model.RoadMap;
 public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 	
 	private final static String TITLE = "Change CO2 Class";
-	
 	private final static String DESCRIPTION = " Schedule an event to change "
 			+ "the CO2 class of a vehicle after a given number of\n"
 			+ " simulation ticks from now";
@@ -30,7 +29,7 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 	private final static int CONTAMINATION_MAX_VALUE = 10;
 	private final static int CONTAMINATION_INCREASE_VALUE = 1;
 	
-	private static final long serialVersionUID = -8875771187454739902L;
+	private final static long serialVersionUID = -8875771187454739902L;
 	
 	public ChangeCO2ClassDialog (Controller c, JFrame f) {
 		super(c, f);

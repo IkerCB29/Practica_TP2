@@ -52,12 +52,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JSpinner ticksSelection;
 	private JButton exit;
 	
-	private static final long serialVersionUID = -4423199850333010661L;
+	private final static long serialVersionUID = -4423199850333010661L;
 
 	public ControlPanel(Controller c, JFrame f) {
 		ctrl = c;
 		frame = f;
 		initGUI();
+		c.addObserver(this);
 	}
 	
 	private void initGUI() {
