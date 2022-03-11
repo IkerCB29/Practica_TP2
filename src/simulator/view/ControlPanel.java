@@ -54,7 +54,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	private final static long serialVersionUID = -4423199850333010661L;
 
-	public ControlPanel(Controller c, JFrame f) {
+	ControlPanel(Controller c, JFrame f) {
 		ctrl = c;
 		frame = f;
 		initGUI();
@@ -125,7 +125,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeContamination.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ChangeCO2ClassDialog(ctrl, frame);
+				if(ctrl.getVehicles().size() == 0)
+					JOptionPane.showMessageDialog(null, "No vehicle to set contamination");
+				else
+					new ChangeCO2ClassDialog(ctrl, frame);
 			}
 		});
 		return changeContamination;
@@ -137,7 +140,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeWeatherCondition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ChangeWeatherDialog(ctrl, frame);
+				if(ctrl.getVehicles().size() == 0)
+					JOptionPane.showMessageDialog(null, "No road to set weather");
+				else
+					new ChangeWeatherDialog(ctrl, frame);
 			}
 		});
 		return changeWeatherCondition;

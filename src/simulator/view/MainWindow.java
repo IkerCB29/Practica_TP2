@@ -9,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,7 +22,7 @@ public class MainWindow extends JFrame{
 	
 	private Controller ctrl;
 	
-	public MainWindow(Controller c) {
+	 public MainWindow(Controller c) {
 		super("Traffic Simulator");
 		ctrl = c;
 		initGUI();

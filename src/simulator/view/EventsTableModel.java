@@ -19,7 +19,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	
 	private List<Event> events;
 	
-	public EventsTableModel (Controller c) {
+	EventsTableModel (Controller c) {
 		events = new ArrayList<>();
 		c.addObserver(this);
 	}
