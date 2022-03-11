@@ -42,6 +42,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private final static int TICKS_INCREASE_VALUE = 1;
 	
 	private Controller ctrl;
+
 	private JFrame frame;
 	private JButton loadEvents;
 	private JButton changeContamination;
@@ -59,56 +60,39 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		initGUI();
 	}
 	
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
-
-	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {}
-
-	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
-
-	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {}
-
-	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
-
-	@Override
-	public void onError(String err) {}
-	
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
+		
 		JToolBar controls = new JToolBar();
 		controls.setFloatable(false);
 		
-		createLoadEventsButton();
+		loadEvents = createLoadEventsButton();
 		controls.add(loadEvents);
 		controls.addSeparator();
 		
-		createChangeContaminationButton();
+		changeContamination = createChangeContaminationButton();
 		controls.add(changeContamination);
-		createChangeWeatherConditionButton();
+		changeWeatherCondition = createChangeWeatherConditionButton();
 		controls.add(changeWeatherCondition);
 		controls.addSeparator();
 		
-		createStartButton();
+		start = createStartButton();
 		controls.add(start);
-		createStopButton();
+		stop = createStopButton();
 		controls.add(stop);
-		createTicksButton();
+		ticksSelection = createTicksButton();
 		controls.add(new JLabel(" Ticks: "));
 		controls.add(ticksSelection);
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		
-		createExitButton();
+		exit = createExitButton();
 		controls.add(exit);
 		
 		this.add(controls, BorderLayout.CENTER);
 	}
 		
-	private void createLoadEventsButton() {
-		loadEvents = new JButton();
+	private JButton createLoadEventsButton() {
+		JButton loadEvents = new JButton();
 		loadEvents.setIcon(new ImageIcon(LOAD_EVENTS_ICON_DIR));
 		loadEvents.addActionListener(new ActionListener() {
 			@Override
@@ -131,10 +115,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				}
 			}
 		});
+		return loadEvents;
 	}
 
-	private void createChangeContaminationButton() {
-		changeContamination = new JButton();
+	private JButton createChangeContaminationButton() {
+		JButton changeContamination = new JButton();
 		changeContamination.setIcon(new ImageIcon(CHANGE_CONT_ICON_DIR));
 		changeContamination.addActionListener(new ActionListener() {
 			@Override
@@ -142,24 +127,34 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				new ChangeCO2ClassDialog(ctrl, frame);
 			}
 		});
+		return changeContamination;
 	}
 	
-	private void createChangeWeatherConditionButton() {
-		changeWeatherCondition = new JButton();
+	private JButton createChangeWeatherConditionButton() {
+		JButton changeWeatherCondition = new JButton();
 		changeWeatherCondition.setIcon(new ImageIcon(CHANGE_WEATHER_ICON_DIR));
+		changeWeatherCondition.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ChangeWeatherDialog(ctrl, frame);
+			}
+		});
+		return changeWeatherCondition;
 	}
 	
-	private void createStartButton() {
-		start = new JButton();
+	private JButton createStartButton() {
+		JButton start = new JButton();
 		start.setIcon(new ImageIcon(START_ICON_DIR));
+		return start;
 	}
 	
-	private void createStopButton() {
-		stop = new JButton();
+	private JButton createStopButton() {
+		JButton stop = new JButton();
 		stop.setIcon(new ImageIcon(STOP_ICON_DIR));
+		return stop;
 	}
 	
-	private void createTicksButton() {
+	private JSpinner createTicksButton() {
 		ticksSelection = new JSpinner(
 				new SpinnerNumberModel(
 						TICKS_INI_VALUE,
@@ -168,10 +163,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 						TICKS_INCREASE_VALUE
 		));
 		ticksSelection.setMaximumSize(new Dimension(100,30));
+		return ticksSelection;
 	}
 	
-	private void createExitButton() {
-		exit = new JButton();
+	private JButton createExitButton() {
+		JButton exit = new JButton();
 		exit.setIcon(new ImageIcon(EXIT_ICON_DIR));
 		exit.addActionListener(new ActionListener() {
 			@Override
@@ -186,6 +182,25 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 					System.exit(0);
 			}
 		});
+		return exit;
 	}
+
+	@Override
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
+
+	@Override
+	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {}
+
+	@Override
+	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
+
+	@Override
+	public void onReset(RoadMap map, List<Event> events, int time) {}
+
+	@Override
+	public void onRegister(RoadMap map, List<Event> events, int time) {}
+
+	@Override
+	public void onError(String err) {}
 	
 }
