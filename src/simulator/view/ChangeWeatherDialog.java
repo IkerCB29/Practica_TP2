@@ -1,13 +1,13 @@
 package simulator.view;
 
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 
 import simulator.control.Controller;
 import simulator.misc.Pair;
@@ -26,8 +26,8 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 	
 	private final static long serialVersionUID = 8182884865787377877L;
 	
-	ChangeWeatherDialog(Controller c, JFrame f) {
-		super(c, f);
+	ChangeWeatherDialog(Controller c, Window w) {
+		super(c, w);
 		this.setTitle(TITLE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(CHANGE_WEATHER_ICON_DIR));
 		this.setVisible(true);

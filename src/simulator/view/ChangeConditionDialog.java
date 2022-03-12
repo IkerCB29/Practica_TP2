@@ -2,7 +2,9 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -10,7 +12,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -43,11 +44,11 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	protected JButton buildEvent;
 	protected JButton cancel;
 	
-	ChangeConditionDialog(Controller c, JFrame f) {
-		super(f, true);
+	ChangeConditionDialog(Controller c, Window w) {
+		super((Frame) w, true);
 		ctrl = c;
-		c.addObserver(this);
 		initGUI();
+		c.addObserver(this);
 	}
 	
 	private void initGUI() {

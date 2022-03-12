@@ -32,7 +32,7 @@ public class MainWindow extends JFrame{
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 		
-		mainPanel.add(new ControlPanel(ctrl, this), BorderLayout.PAGE_START);
+		mainPanel.add(new ControlPanel(ctrl), BorderLayout.PAGE_START);
 		mainPanel.add(new StatusBar(ctrl), BorderLayout.PAGE_END);
 		
 		JPanel viewsPanel = new JPanel(new GridLayout(1, 2));
@@ -51,6 +51,17 @@ public class MainWindow extends JFrame{
 		createViewPanel(new JTable(new EventsTableModel(ctrl)), "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
+		
+		JPanel vehiclesView =
+				createViewPanel(new JTable(new VehicleTableModel(ctrl)), "Vehicles");
+		vehiclesView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(vehiclesView);
+		
+		JPanel roadsView =
+				createViewPanel(new JTable(new RoadsTableModel(ctrl)), "Roads");
+		roadsView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(roadsView);
+		
 		// TODO add other tables
 		// ...
 		

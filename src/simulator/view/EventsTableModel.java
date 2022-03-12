@@ -15,6 +15,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	private String[] columnNames = {"Time", "Description"};
 	
 	private final static int NUM_COLUMNS = 2;
+	
 	private final static long serialVersionUID = -9070754042327367519L;
 	
 	private List<Event> events;
@@ -60,13 +61,17 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		this.events.add(e);
-		this.setValueAt(e.getTime(), events.size() - 1, 0);
-		this.setValueAt(e.toString(), events.size() - 1, 1);
+		this.setValueAt(e.getTime(), this.events.size() - 1, 0);
+		this.setValueAt(e.toString(), this.events.size() - 1, 1);
 		this.fireTableDataChanged();
 	}
 
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {}
+	public void onReset(RoadMap map, List<Event> events, int time) {
+		int size = this.events.size();
+		this.events = new ArrayList<>();
+		this.fireTableRowsDeleted(0, size);
+	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {}

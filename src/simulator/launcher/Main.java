@@ -154,9 +154,7 @@ public class Main {
 		c.run(ticks, os);
 	}
 	
-	private static void startGUIMode() throws IOException {
-		TrafficSimulator ts = new TrafficSimulator();
-		Controller c = new Controller(ts, _eventsFactory);
+	private static void startGUIMode(Controller c) throws IOException {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
