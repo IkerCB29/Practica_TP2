@@ -47,23 +47,33 @@ public class MainWindow extends JFrame{
 		viewsPanel.add(mapsPanel);
 		
 		//tables
+		JTable eventsTable = new JTable(new EventsTableModel(ctrl));
+		eventsTable.setShowGrid(false);
 		JPanel eventsView =
-		createViewPanel(new JTable(new EventsTableModel(ctrl)), "Events");
+				createViewPanel(eventsTable, "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
 		
+		JTable vehiclesTable = new JTable(new VehiclesTableModel(ctrl));
+		vehiclesTable.setShowGrid(false);
 		JPanel vehiclesView =
-				createViewPanel(new JTable(new VehicleTableModel(ctrl)), "Vehicles");
+				createViewPanel(vehiclesTable, "Vehicles");
 		vehiclesView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(vehiclesView);
 		
+		JTable roadsTable = new JTable(new RoadsTableModel(ctrl));
+		roadsTable.setShowGrid(false);
 		JPanel roadsView =
-				createViewPanel(new JTable(new RoadsTableModel(ctrl)), "Roads");
+				createViewPanel(roadsTable, "Roads");
 		roadsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(roadsView);
 		
-		// TODO add other tables
-		// ...
+		JTable junctionTable = new JTable(new JunctionsTableModel(ctrl));
+		junctionTable.setShowGrid(false);
+		JPanel junctionsView =
+				createViewPanel(junctionTable, "Junctions");
+		junctionsView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(junctionsView);
 		
 		// maps
 		JPanel mapView = createViewPanel(new MapComponent(ctrl), "Map");

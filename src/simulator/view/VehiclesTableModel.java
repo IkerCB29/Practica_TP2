@@ -11,7 +11,7 @@ import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
 
-public class VehicleTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class VehiclesTableModel extends AbstractTableModel implements TrafficSimObserver{
 
 	private final static int NUM_COLUMNS = 8;
 	
@@ -22,7 +22,7 @@ public class VehicleTableModel extends AbstractTableModel implements TrafficSimO
 	
 	private List<Vehicle> vehicles;
 	
-	VehicleTableModel (Controller c) {
+	VehiclesTableModel (Controller c) {
 		vehicles = new ArrayList<>();
 		c.addObserver(this);
 	}
