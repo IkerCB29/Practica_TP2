@@ -70,15 +70,6 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		roads = map.getRoads();
-		for(int i = 0; i < roads.size(); i++) {
-			this.setValueAt(roads.get(i).getId(), i, 0);
-			this.setValueAt(roads.get(i).getLength(), i, 1);
-			this.setValueAt(roads.get(i).getWeather(), i, 2);
-			this.setValueAt(roads.get(i).getMaxSpeed(), i, 3);
-			this.setValueAt(roads.get(i).getSpeedLimit(), i, 4);
-			this.setValueAt(roads.get(i).getTotalCO2(), i, 5);
-			this.setValueAt(roads.get(i).getContLimit(), i, 6);
-		}
 		this.fireTableDataChanged();
 	}
 

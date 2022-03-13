@@ -61,11 +61,6 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		junctions = map.getJunctions();
-		for(int i = 0; i < junctions.size(); i++) {
-			this.setValueAt(junctions.get(i).getId(), i, 0);
-			this.setValueAt(junctions.get(i).getGreenRoadId(), i, 1);
-			this.setValueAt(junctions.get(i).getQueues(), i, 2);
-		}
 		this.fireTableDataChanged();
 	}
 

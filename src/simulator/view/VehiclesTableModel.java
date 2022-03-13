@@ -72,16 +72,6 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		vehicles = map.getVehicles();
-		for(int i = 0; i < vehicles.size(); i++) {
-			this.setValueAt(vehicles.get(i).getId(), i, 0);
-			this.setValueAt(vehicles.get(i).getLocation(), i, 1);
-			this.setValueAt(vehicles.get(i).getItinerary(), i, 2);
-			this.setValueAt(vehicles.get(i).getContClass(), i, 3);
-			this.setValueAt(vehicles.get(i).getMaxSpeed(), i, 4);
-			this.setValueAt(vehicles.get(i).getSpeed(), i, 5);
-			this.setValueAt(vehicles.get(i).getTotalCO2(), i, 6);
-			this.setValueAt(vehicles.get(i).getDistance(), i, 7);
-		}
 		this.fireTableDataChanged();
 	}
 
