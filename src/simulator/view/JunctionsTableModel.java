@@ -7,21 +7,22 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class JunctionsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
-	private String[] columnNames = {"Time", "Description"};
+	private final static int NUM_COLUMNS = 3;
 	
-	private final static int NUM_COLUMNS = 2;
+	private String[] columnNames = {"Id", "Green", "Queues"};
 	
-	private final static long serialVersionUID = -9070754042327367519L;
+	private static final long serialVersionUID = 5203065099024018166L;
 	
-	private List<Event> events;
-	
-	EventsTableModel (Controller c) {
-		events = new ArrayList<>();
+	private List<Junction> junctions;
+
+	JunctionsTableModel (Controller c) {
+		junctions = new ArrayList<>();
 		c.addObserver(this);
 	}
 	
@@ -32,7 +33,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	
 	@Override
 	public int getRowCount() {
-		return events.size();
+		return junctions.size();
 	}
 
 	@Override
@@ -44,9 +45,11 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch(columnIndex) {
 		case 0:
-			return events.get(rowIndex).getTime();
+			return junctions.get(rowIndex).getId();
 		case 1:
-			return events.get(rowIndex).toString();
+			return junctions.get(rowIndex).getGreenRoadId();
+		case 2:
+			return junctions.get(rowIndex).getQueues();
 		default:
 			return null;
 		}
@@ -57,23 +60,17 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		update(events);
+		junctions = map.getJunctions();
+		this.fireTableDataChanged();
 	}
 
 	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		update(events);
-	}
-	
-	private void update(List<Event> events) {
-		this.events = events;
-		this.fireTableDataChanged();
-	}
-	
+	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
+
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		int size = this.events.size();
-		this.events = new ArrayList<>();
+		int size = junctions.size();
+		junctions = new ArrayList<>();
 		this.fireTableRowsDeleted(0, size);
 	}
 
@@ -82,5 +79,5 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onError(String err) {}
-
+	
 }

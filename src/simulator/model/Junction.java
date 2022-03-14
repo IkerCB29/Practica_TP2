@@ -49,6 +49,9 @@ public class Junction extends SimulatedObject{
 		this.yCoor = yCoor;
 	}
 	
+	public int getX() {	return this.xCoor;}
+	public int getY() {	return this.yCoor;}
+	
 	void addIncomingRoad(Road r) {
 		if(r.getDest() != this)
 			throw new IllegalArgumentException(INVALID_ROAD);
@@ -102,7 +105,7 @@ public class Junction extends SimulatedObject{
 		
 		JSONObject jo = new JSONObject();
 		jo.put("id", _id);
-		jo.put("green", getGreenRoad());
+		jo.put("green", getGreenRoadId());
 		JSONArray ja = new JSONArray();
 		int i = 0;
 		for(Road r : srcRoads) {
@@ -124,14 +127,17 @@ public class Junction extends SimulatedObject{
 		return jo;
 	}
 	
-	private String getGreenRoad() {
+	public String getGreenRoadId() {
 		if(currGreen != - 1)
 			return srcRoads.get(currGreen).getId();
 		else
 			return NO_CURRENT_GREEN_ROAD;
 	}
-	public int getX() {	return this.xCoor;}
-	public int getY() {	return this.yCoor;}
+	
 	public int getGreenLightIndex() { return this.currGreen;}
+	
+	public Map<Road, List<Vehicle>> getQueues() { return Collections.unmodifiableMap(road_Queue); }
+	
 	public List<Road> getInRoads() {return Collections.unmodifiableList(srcRoads);}
+	
 }

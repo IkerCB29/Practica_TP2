@@ -9,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,7 +22,7 @@ public class MainWindow extends JFrame{
 	
 	private Controller ctrl;
 	
-	public MainWindow(Controller c) {
+	 public MainWindow(Controller c) {
 		super("Traffic Simulator");
 		ctrl = c;
 		initGUI();
@@ -33,7 +32,7 @@ public class MainWindow extends JFrame{
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 		
-		mainPanel.add(new ControlPanel(ctrl, this), BorderLayout.PAGE_START);
+		mainPanel.add(new ControlPanel(ctrl), BorderLayout.PAGE_START);
 		mainPanel.add(new StatusBar(ctrl), BorderLayout.PAGE_END);
 		
 		JPanel viewsPanel = new JPanel(new GridLayout(1, 2));
@@ -48,12 +47,33 @@ public class MainWindow extends JFrame{
 		viewsPanel.add(mapsPanel);
 		
 		//tables
+		JTable eventsTable = new JTable(new EventsTableModel(ctrl));
+		eventsTable.setShowGrid(false);
 		JPanel eventsView =
-		createViewPanel(new JTable(new EventsTableModel(ctrl)), "Events");
+				createViewPanel(eventsTable, "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
-		// TODO add other tables
-		// ...
+		
+		JTable vehiclesTable = new JTable(new VehiclesTableModel(ctrl));
+		vehiclesTable.setShowGrid(false);
+		JPanel vehiclesView =
+				createViewPanel(vehiclesTable, "Vehicles");
+		vehiclesView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(vehiclesView);
+		
+		JTable roadsTable = new JTable(new RoadsTableModel(ctrl));
+		roadsTable.setShowGrid(false);
+		JPanel roadsView =
+				createViewPanel(roadsTable, "Roads");
+		roadsView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(roadsView);
+		
+		JTable junctionTable = new JTable(new JunctionsTableModel(ctrl));
+		junctionTable.setShowGrid(false);
+		JPanel junctionsView =
+				createViewPanel(junctionTable, "Junctions");
+		junctionsView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(junctionsView);
 		
 		// maps
 		JPanel mapView = createViewPanel(new MapComponent(ctrl), "Map");

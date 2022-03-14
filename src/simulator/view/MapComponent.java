@@ -205,8 +205,8 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 		Image i = null;
 		try {
 			return ImageIO.read(new File("resources/icons/" + img));
-		} catch (IOException e) {
-		}
+		} 
+		catch (IOException e) {}
 		return i;
 	}
 
@@ -218,8 +218,7 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 	}
 
 	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-	}
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
@@ -242,7 +241,6 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 	}
 
 	@Override
-	public void onError(String err) {
-	}
+	public void onError(String err) {}
 
 }

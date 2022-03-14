@@ -139,4 +139,8 @@ public class Vehicle extends SimulatedObject{
 		return myRoad;
 	}
 	
+	public int getDistance() {
+		return distanceTraveled;
+	}
+	
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +20,7 @@ import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -43,7 +43,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	private Controller ctrl;
 
-	private JFrame frame;
 	private JButton loadEvents;
 	private JButton changeContamination;
 	private JButton changeWeatherCondition;
@@ -54,9 +53,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	
 	private final static long serialVersionUID = -4423199850333010661L;
 
-	public ControlPanel(Controller c, JFrame f) {
+	ControlPanel(Controller c) {
 		ctrl = c;
-		frame = f;
 		initGUI();
 		c.addObserver(this);
 	}
@@ -125,7 +123,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeContamination.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ChangeCO2ClassDialog(ctrl, frame);
+				if(ctrl.getVehicles().size() == 0)
+					JOptionPane.showMessageDialog(null, "No vehicle to set contamination");
+				else {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							new ChangeCO2ClassDialog(
+									ctrl, 
+									SwingUtilities.getWindowAncestor(ControlPanel.this)
+							);
+						}
+					});
+				}
 			}
 		});
 		return changeContamination;
@@ -137,7 +147,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeWeatherCondition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ChangeWeatherDialog(ctrl, frame);
+				if(ctrl.getVehicles().size() == 0)
+					JOptionPane.showMessageDialog(null, "No road to set weather");
+				else {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							new ChangeWeatherDialog(
+									ctrl,
+									SwingUtilities.getWindowAncestor(ControlPanel.this)
+							);
+						}
+					});
+				}
 			}
 		});
 		return changeWeatherCondition;

@@ -2,16 +2,17 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -23,7 +24,7 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public abstract class ChangeConditionDialog extends JDialog implements TrafficSimObserver{
+public abstract class ChangeConditionDialog extends JDialog implements TrafficSimObserver {
 
 	private final static int TICKS_INI_VALUE = 1;
 	private final static int TICKS_MIN_VALUE = 1;
@@ -37,69 +38,78 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	
 	protected Controller ctrl;
 	
-	protected JSpinner simulatedObjectSelection;
-	protected JSpinner conditionSelection;
+	protected JComboBox<String> simulatedObjectSelection;
+	protected JComboBox<String> conditionSelection;
 	protected JSpinner ticksSelection;
 	protected JButton buildEvent;
 	protected JButton cancel;
 	
-	public ChangeConditionDialog(Controller c, JFrame f) {
-		super(f, true);
+	ChangeConditionDialog(Controller c, Window w) {
+		super((Frame) w, true);
 		ctrl = c;
-		c.addObserver(this);
 		initGUI();
+		c.addObserver(this);
 	}
 	
 	private void initGUI() {
-		try {
-			this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 			
-			JTextArea description = new JTextArea(setDescription());
-			description.setEditable(false);
-			this.add(description, BorderLayout.NORTH);
+		JTextArea description = new JTextArea(setDescription());
+		description.setEditable(false);
+		this.add(description, BorderLayout.NORTH);
 			
-			JToolBar selectOptions = new JToolBar();
-			selectOptions.setFloatable(false);
+		JToolBar selectOptions = new JToolBar();
+		selectOptions.setFloatable(false);
 			
-			simulatedObjectSelection = createSimulatedObjectSelection ();
-			selectOptions.add(new JLabel (setSimulatedObjectSelectionText()));
-			selectOptions.add(simulatedObjectSelection);
+		simulatedObjectSelection = createSimulatedObjectSelection ();
+		selectOptions.add(new JLabel (setSimulatedObjectSelectionText()));
+		selectOptions.add(simulatedObjectSelection);
 			
-			conditionSelection = createConditionSelection();
-			selectOptions.add(new JLabel (setConditionSelectionText()));
-			selectOptions.add(conditionSelection);
+		conditionSelection = createConditionSelection();
+		selectOptions.add(new JLabel (setConditionSelectionText()));
+		selectOptions.add(conditionSelection);
 			
-			ticksSelection = createTicksSelection();
-			selectOptions.add(new JLabel ("  Ticks: "));
-			selectOptions.add(ticksSelection);
+		ticksSelection = createTicksSelection();
+		selectOptions.add(new JLabel ("  Ticks: "));
+		selectOptions.add(ticksSelection);
 			
-			this.add(selectOptions, BorderLayout.CENTER);
+		this.add(selectOptions, BorderLayout.CENTER);
 			
-			JPanel buttons = new JPanel();
-			cancel = createCancelButton();
-			buttons.add(cancel);
-			buildEvent = createBuildEventButton();
-			buttons.add(buildEvent);
-			this.add(buttons, BorderLayout.SOUTH);
+		JPanel buttons = new JPanel();
+		cancel = createCancelButton();
+		buttons.add(cancel);
+		buildEvent = createBuildEventButton();
+		buttons.add(buildEvent);
+		this.add(buttons, BorderLayout.SOUTH);
 			
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			this.pack();
-			this.setLocation(screenSize.width / 2 - WIDTH / 2, screenSize.height / 2 - HEIGHT / 2);
-			this.setSize(new Dimension(WIDTH, HEIGHT));
-			this.setResizable(false);
-		}
-		catch(IllegalArgumentException err) {
-			JOptionPane.showMessageDialog(null, "No vehicle to set contamination");
-		}
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.pack();
+		this.setLocation(screenSize.width / 2 - WIDTH / 2, screenSize.height / 2 - HEIGHT / 2);
+		this.setSize(new Dimension(WIDTH, HEIGHT));
+		this.setResizable(false);
 	}
 	
 	protected abstract String setDescription();
 
 	protected abstract String setSimulatedObjectSelectionText();
-	protected abstract JSpinner createSimulatedObjectSelection();
+	protected JComboBox<String> createSimulatedObjectSelection() {
+		JComboBox<String> simulatedObjectSelection = new JComboBox<>(
+				getSimulatedObjectIdsArray()
+		);		
+		simulatedObjectSelection.setMaximumSize(new Dimension(100,30));
+		return simulatedObjectSelection;
+	}
+	protected abstract String[] getSimulatedObjectIdsArray();
 	
 	protected abstract String setConditionSelectionText();
-	protected abstract JSpinner createConditionSelection();
+	protected JComboBox<String> createConditionSelection() {
+		JComboBox<String> conditionSelection = new JComboBox<>(
+				getConditionValuesArray()
+		);		
+		conditionSelection.setMaximumSize(new Dimension(100,30));
+		return conditionSelection ;
+	}
+	protected abstract String[] getConditionValuesArray();
 	
 	private JSpinner createTicksSelection() {
 		JSpinner ticksSelection = new JSpinner(
@@ -125,8 +135,8 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	}
 	
 	private void closeWindow() {
-		ChangeConditionDialog.this.setVisible(false);
-		ChangeConditionDialog.this.dispose();
+		this.setVisible(false);
+		this.dispose();
 	}
 	
 	protected abstract JButton createBuildEventButton();
