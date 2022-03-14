@@ -44,6 +44,12 @@ public class Controller {
 		}
 	}
 
+	public void run(int n) {
+		for(int i = 0; i < n; i++) {
+			trafficSimulator.advance();
+		}
+	}
+	
 	public void run(int n, OutputStream out){
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < n; i++){
@@ -66,14 +72,6 @@ public class Controller {
 	
 	public void removeObserver(TrafficSimObserver o) {
 		trafficSimulator.removeObserver(o);
-	}
-	
-	public List<Vehicle> getVehicles(){
-		return trafficSimulator.getVehicles();
-	}
-	
-	public List<Road> getRoads(){
-		return trafficSimulator.getRoads();
 	}
 	
 	public void addChangeCO2Event(int time, List<Pair<String, Integer>> cs) {

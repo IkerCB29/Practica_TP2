@@ -11,8 +11,5 @@ public class NewCityRoadEvent extends NewRoadEvent{
 	Road createRoadObject() {
 		return new CityRoad(id, srcJunction, desJunction, maxSpeed, co2Limit, length, weather);
 	}
-	@Override
-	public String toString() {
-		return "New City Road '" + id + "'";
-	}
+	
 }

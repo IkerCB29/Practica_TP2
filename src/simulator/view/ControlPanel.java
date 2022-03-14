@@ -51,12 +51,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JSpinner ticksSelection;
 	private JButton exit;
 	
+	private boolean stopped = true;
+	
 	private final static long serialVersionUID = -4423199850333010661L;
 
 	ControlPanel(Controller c) {
+		c.addObserver(this);
 		ctrl = c;
 		initGUI();
-		c.addObserver(this);
 	}
 	
 	private void initGUI() {
@@ -123,19 +125,15 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeContamination.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(ctrl.getVehicles().size() == 0)
-					JOptionPane.showMessageDialog(null, "No vehicle to set contamination");
-				else {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							new ChangeCO2ClassDialog(
-									ctrl, 
-									SwingUtilities.getWindowAncestor(ControlPanel.this)
-							);
-						}
-					});
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						new ChangeCO2ClassDialog(
+								ctrl, 
+								SwingUtilities.getWindowAncestor(ControlPanel.this)
+						);
+					}
+				});
 			}
 		});
 		return changeContamination;
@@ -147,19 +145,15 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeWeatherCondition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(ctrl.getVehicles().size() == 0)
-					JOptionPane.showMessageDialog(null, "No road to set weather");
-				else {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							new ChangeWeatherDialog(
-									ctrl,
-									SwingUtilities.getWindowAncestor(ControlPanel.this)
-							);
-						}
-					});
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						new ChangeWeatherDialog(
+								ctrl,
+								SwingUtilities.getWindowAncestor(ControlPanel.this)
+						);
+					}
+				});
 			}
 		});
 		return changeWeatherCondition;
@@ -168,13 +162,67 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JButton createStartButton() {
 		JButton start = new JButton();
 		start.setIcon(new ImageIcon(START_ICON_DIR));
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stopped = false;
+				enableToolBar(false);
+				run_sim(Integer.parseInt(ticksSelection.getValue().toString()));
+			}
+		});
 		return start;
+	}
+	
+	private void run_sim(int n) {
+		if (n > 0 && !stopped) {
+			try {
+				ctrl.run(1);
+			} catch (Exception e) {
+				// TODO show error message
+				stopped = true;
+				return;
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					run_sim(n - 1);
+				}
+			});
+		} 
+		else {
+			enableToolBar(true);
+			stopped = true;
+		}
+	}
+	
+	private void enableToolBar(boolean state) {
+		loadEvents.setEnabled(state);;
+		changeContamination.setEnabled(state);
+		changeWeatherCondition.setEnabled(state);
+		start.setEnabled(state);
+		ticksSelection.setEnabled(state);
+		exit.setEnabled(state);
 	}
 	
 	private JButton createStopButton() {
 		JButton stop = new JButton();
 		stop.setIcon(new ImageIcon(STOP_ICON_DIR));
+		stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stop();
+			}
+		});
 		return stop;
+	}
+	
+	private void stop() {
+		stopped = true;
 	}
 	
 	private JSpinner createTicksButton() {

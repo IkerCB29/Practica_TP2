@@ -22,6 +22,7 @@ import javax.swing.SpinnerNumberModel;
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
+import simulator.model.SimulatedObject;
 import simulator.model.TrafficSimObserver;
 
 public abstract class ChangeConditionDialog extends JDialog implements TrafficSimObserver {
@@ -38,17 +39,19 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	
 	protected Controller ctrl;
 	
-	protected JComboBox<String> simulatedObjectSelection;
-	protected JComboBox<String> conditionSelection;
+	protected JComboBox<SimulatedObject> simulatedObjectSelection;
+	protected JComboBox<Object> conditionSelection;
 	protected JSpinner ticksSelection;
 	protected JButton buildEvent;
 	protected JButton cancel;
 	
+	protected SimulatedObject [] ids;
+	
 	ChangeConditionDialog(Controller c, Window w) {
 		super((Frame) w, true);
+		c.addObserver(this);
 		ctrl = c;
 		initGUI();
-		c.addObserver(this);
 	}
 	
 	private void initGUI() {
@@ -92,24 +95,23 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	protected abstract String setDescription();
 
 	protected abstract String setSimulatedObjectSelectionText();
-	protected JComboBox<String> createSimulatedObjectSelection() {
-		JComboBox<String> simulatedObjectSelection = new JComboBox<>(
-				getSimulatedObjectIdsArray()
+	protected JComboBox<SimulatedObject> createSimulatedObjectSelection() {
+		JComboBox<SimulatedObject> simulatedObjectSelection = new JComboBox<>(
+				ids
 		);		
 		simulatedObjectSelection.setMaximumSize(new Dimension(100,30));
 		return simulatedObjectSelection;
 	}
-	protected abstract String[] getSimulatedObjectIdsArray();
 	
 	protected abstract String setConditionSelectionText();
-	protected JComboBox<String> createConditionSelection() {
-		JComboBox<String> conditionSelection = new JComboBox<>(
+	protected JComboBox<Object> createConditionSelection() {
+		JComboBox<Object> conditionSelection = new JComboBox<>(
 				getConditionValuesArray()
 		);		
 		conditionSelection.setMaximumSize(new Dimension(100,30));
 		return conditionSelection ;
 	}
-	protected abstract String[] getConditionValuesArray();
+	protected abstract Object[] getConditionValuesArray();
 	
 	private JSpinner createTicksSelection() {
 		JSpinner ticksSelection = new JSpinner(

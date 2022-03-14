@@ -22,7 +22,6 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	private List<Junction> junctions;
 
 	JunctionsTableModel (Controller c) {
-		junctions = new ArrayList<>();
 		c.addObserver(this);
 	}
 	
@@ -60,8 +59,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		junctions = map.getJunctions();
-		this.fireTableDataChanged();
+		update(map);
 	}
 
 	@Override
@@ -75,9 +73,16 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		update(map);
+	}
 
 	@Override
 	public void onError(String err) {}
+	
+	private void update(RoadMap map) {
+		junctions = map.getJunctions();
+		this.fireTableDataChanged();
+	}
 	
 }

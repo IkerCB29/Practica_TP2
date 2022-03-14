@@ -40,11 +40,13 @@ import simulator.view.MainWindow;
 
 public class Main {
 	
-	private final static Integer _timeLimitDefaultValue = 10;
+	private final static Integer timeLimitDefaultValue = 10;
+	
+	private static String _mode = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
-	private static int ticks;
+	private static int _ticks;
 
 	private static void parseArgs(String[] args) {
 
@@ -57,6 +59,7 @@ public class Main {
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
+			parseModeOption(line);
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseOutFileOption(line);
@@ -83,6 +86,7 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("Set console or GUI mode").build());
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
@@ -91,13 +95,20 @@ public class Main {
 
 		return cmdLineOptions;
 	}
+	
+	private static void parseModeOption(CommandLine line){
+		if(line.hasOption("m"))
+			_mode = line.getOptionValue("m");
+		else
+			_mode = "gui";
+	}
 
 	private static void parseTicksOption(CommandLine line){
 		if(line.hasOption("t")){
-			ticks = Integer.parseInt(line.getOptionValue("t"));
+			_ticks = Integer.parseInt(line.getOptionValue("t"));
 		}
 		else
-			ticks = _timeLimitDefaultValue;
+			_ticks = timeLimitDefaultValue;
 	}
 
 	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
@@ -109,9 +120,10 @@ public class Main {
 	}
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
-		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
-			throw new ParseException("An events file is missing");
+		if(_mode.equals("console") || line.hasOption("i")) {
+			_inFile = line.getOptionValue("i");
+			if (_inFile == null) 
+				throw new ParseException("An events file is missing");
 		}
 	}
 
@@ -150,11 +162,16 @@ public class Main {
 			os = new FileOutputStream(_outFile);
 		else
 			os = System.out;
-		new MainWindow(c);
-		c.run(ticks, os);
+		c.run(_ticks, os);
 	}
 	
-	private static void startGUIMode(Controller c) throws IOException {
+	private static void startGUIMode() throws IOException {
+		TrafficSimulator ts = new TrafficSimulator();
+		Controller c = new Controller(ts, _eventsFactory);
+		if(_inFile != null) {
+			InputStream is= new FileInputStream(_inFile);
+			c.loadEvents(is);
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -166,8 +183,12 @@ public class Main {
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
-		//startGUIMode();
+		if(_mode.equals("gui"))
+			startGUIMode();
+		else if(_mode.equals("console"))
+			startBatchMode();
+		else
+			throw new IllegalArgumentException("Invalid mode type");
 	}
 
 	public static void main(String[] args) {

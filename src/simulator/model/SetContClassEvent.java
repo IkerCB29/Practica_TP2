@@ -26,8 +26,10 @@ public class SetContClassEvent extends Event{
 			v.setContClass(p.getSecond());
 		}		
 	}
+	
 	@Override
 	public String toString() {
-		return "New SetContClass";
+		return "Change CO2 class: " + cs.toString();
 	}
+	
 }

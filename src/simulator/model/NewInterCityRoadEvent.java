@@ -12,9 +12,5 @@ public class NewInterCityRoadEvent extends NewRoadEvent{
 	Road createRoadObject() {
 		return new InterCityRoad(id, srcJunction, desJunction, maxSpeed, co2Limit, length, weather);
 	}
-	@Override
-	public String toString() {
-		return "New Inter City Road '" + id + "'";
-	}
 	
 }

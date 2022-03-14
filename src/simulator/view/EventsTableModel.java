@@ -64,12 +64,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		update(events);
 	}
-	
-	private void update(List<Event> events) {
-		this.events = events;
-		this.fireTableDataChanged();
-	}
-	
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		int size = this.events.size();
@@ -78,9 +72,16 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		update(events);
+	}
 
 	@Override
 	public void onError(String err) {}
-
+	
+	private void update(List<Event> events) {
+		this.events = events;
+		this.fireTableDataChanged();
+	}
+	
 }

@@ -42,16 +42,6 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 	protected String setSimulatedObjectSelectionText() {
 		return " Road: ";
 	}
-
-	@Override
-	protected String [] getSimulatedObjectIdsArray() {
-		List<Road> roadList = ctrl.getRoads();
-		int size = roadList.size();
-		String [] ids = new String [size];
-		for(int i = 0; i < size; i++)
-			ids[i] = roadList.get(i).getId();
-		return ids;
-	}
 	
 	@Override
 	protected String setConditionSelectionText() {
@@ -59,11 +49,11 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 	}
 	
 	@Override
-	protected String[] getConditionValuesArray() {
-		String[] values = new String [Weather.values().length];
+	protected Object[] getConditionValuesArray() {
+		Object[] values = new Weather [Weather.values().length];
 		int i = 0;
 		for(Weather w : Weather.values()) {
-			values[i] = w.toString();
+			values[i] = w;
 			i++;
 		}
 		return values;
@@ -78,7 +68,7 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 				List<Pair<String, Weather>> ws = new ArrayList<>();
 				ws.add(new Pair<String, Weather>(
 						simulatedObjectSelection.getSelectedItem().toString(),
-						Weather.valueOf(conditionSelection.getSelectedItem().toString())
+						(Weather) conditionSelection.getSelectedItem()
 				));
 				ctrl.addChangeWeatherEvent(
 						Integer.parseInt(ticksSelection.getValue().toString()), 
@@ -93,15 +83,29 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
 
 	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {}
+	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
+		updateSimulatedObjectArray(map);
+	}
 
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {}
+	public void onReset(RoadMap map, List<Event> events, int time) {
+		updateSimulatedObjectArray(map);
+	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		updateSimulatedObjectArray(map);
+	}
 
 	@Override
 	public void onError(String err) {}
+
+	private void updateSimulatedObjectArray(RoadMap map) {
+		List<Road> roadList = map.getRoads();
+		int size = roadList.size();
+		ids = new Road[size];
+		for(int i = 0; i < size; i++)
+			ids[i] = roadList.get(i);
+	}
 
 }

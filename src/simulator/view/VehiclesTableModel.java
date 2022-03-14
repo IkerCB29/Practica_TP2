@@ -23,7 +23,6 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	private List<Vehicle> vehicles;
 	
 	VehiclesTableModel (Controller c) {
-		vehicles = new ArrayList<>();
 		c.addObserver(this);
 	}
 	
@@ -48,7 +47,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 		case 0:
 			return vehicles.get(rowIndex).getId();
 		case 1:
-			return vehicles.get(rowIndex).getLocation();
+			return vehicles.get(rowIndex).getRoad() + ":" + vehicles.get(rowIndex).getLocation();
 		case 2:
 			return vehicles.get(rowIndex).getItinerary();
 		case 3:
@@ -71,8 +70,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		vehicles = map.getVehicles();
-		this.fireTableDataChanged();
+		update(map);
 	}
 
 	@Override
@@ -86,9 +84,16 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		update(map);
+	}
 
 	@Override
 	public void onError(String err) {}
+	
+	private void update(RoadMap map) {
+		vehicles = map.getVehicles();
+		this.fireTableDataChanged();	
+	}
 
 }
