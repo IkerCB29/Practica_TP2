@@ -7,12 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 import simulator.control.Controller;
 import simulator.misc.Pair;
 import simulator.model.Event;
 import simulator.model.RoadMap;
+import simulator.model.SimulatedObject;
 import simulator.model.Vehicle;
 
 public class ChangeCO2ClassDialog extends ChangeConditionDialog{
@@ -31,7 +33,6 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 		super(c, w);
 		this.setTitle(TITLE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(CHANGE_CONT_ICON_DIR));
-		this.setVisible(true);
 	}
 
 	@Override
@@ -99,14 +100,13 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 	@Override
 	public void onError(String err) {}
 	
-
-	
 	private void updateSimulatedObjectArray(RoadMap map) {
 		List<Vehicle> vehicleList = map.getVehicles();
 		int size = vehicleList.size();
 		ids = new Vehicle[size];
 		for(int i = 0; i < size; i++)
 			ids[i] = vehicleList.get(i);
+		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(ids));
 	}
 	
 }

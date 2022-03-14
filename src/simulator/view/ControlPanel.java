@@ -42,7 +42,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private final static int TICKS_INCREASE_VALUE = 1;
 	
 	private Controller ctrl;
-
+	private ChangeCO2ClassDialog changeCO2ClassDialog;
+	private ChangeWeatherDialog changeWeatherDialog;
 	private JButton loadEvents;
 	private JButton changeContamination;
 	private JButton changeWeatherCondition;
@@ -51,13 +52,24 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JSpinner ticksSelection;
 	private JButton exit;
 	
-	private boolean stopped = true;
+	private boolean stopped;
+	private int numVehicles;
+	private int numRoads;
 	
 	private final static long serialVersionUID = -4423199850333010661L;
 
 	ControlPanel(Controller c) {
 		c.addObserver(this);
 		ctrl = c;
+		changeCO2ClassDialog = new ChangeCO2ClassDialog(
+				ctrl,
+				SwingUtilities.getWindowAncestor(ControlPanel.this)
+		);
+		changeWeatherDialog = new ChangeWeatherDialog(
+				ctrl,
+				SwingUtilities.getWindowAncestor(ControlPanel.this)
+		);
+		stopped = true;
 		initGUI();
 	}
 	
@@ -98,7 +110,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		loadEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
+				JFileChooser fileChooser = new JFileChooser("resources");
 				int select = fileChooser.showOpenDialog(ControlPanel.this);
 				if(select == JFileChooser.APPROVE_OPTION) {
 					try {
@@ -125,15 +137,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeContamination.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						new ChangeCO2ClassDialog(
-								ctrl, 
-								SwingUtilities.getWindowAncestor(ControlPanel.this)
-						);
-					}
-				});
+				if(numVehicles > 0)
+					changeCO2ClassDialog.setVisible(true);
+				else
+					JOptionPane.showMessageDialog(null, "No vehicles to change contamination");
 			}
 		});
 		return changeContamination;
@@ -145,15 +152,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeWeatherCondition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						new ChangeWeatherDialog(
-								ctrl,
-								SwingUtilities.getWindowAncestor(ControlPanel.this)
-						);
-					}
-				});
+				if(numRoads > 0)
+					changeWeatherDialog.setVisible(true);
+				else
+					JOptionPane.showMessageDialog(null, "No roads to change weather");
 			}
 		});
 		return changeWeatherCondition;
@@ -260,18 +262,29 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {}
 
 	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {}
+	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
+		getNumSimulatedObjects(map);
+	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {}
 
 	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {}
+	public void onReset(RoadMap map, List<Event> events, int time) {
+		getNumSimulatedObjects(map);
+	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {}
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		getNumSimulatedObjects(map);
+	}
 
 	@Override
 	public void onError(String err) {}
+	
+	private void getNumSimulatedObjects(RoadMap map) {
+		numVehicles = map.getVehicles().size();
+		numRoads = map.getRoads().size();
+	}
 	
 }

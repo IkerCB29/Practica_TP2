@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 
 import simulator.control.Controller;
@@ -14,6 +15,7 @@ import simulator.misc.Pair;
 import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
+import simulator.model.SimulatedObject;
 import simulator.model.Weather;
 
 public class ChangeWeatherDialog extends ChangeConditionDialog{
@@ -30,7 +32,6 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 		super(c, w);
 		this.setTitle(TITLE);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(CHANGE_WEATHER_ICON_DIR));
-		this.setVisible(true);
 	}
 
 	@Override
@@ -106,6 +107,7 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 		ids = new Road[size];
 		for(int i = 0; i < size; i++)
 			ids[i] = roadList.get(i);
+		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(ids));
 	}
 
 }

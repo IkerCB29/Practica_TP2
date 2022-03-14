@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -79,8 +80,10 @@ public class MainWindow extends JFrame{
 		JPanel mapView = createViewPanel(new MapComponent(ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400));
 		mapsPanel.add(mapView);
-		// TODO add a map for MapByRoadComponent
-		// ...
+
+		JPanel mapByRoadView = createViewPanel(new MapByRoadComponent(ctrl), "Map by Road");
+		mapView.setPreferredSize(new Dimension(500, 400));
+		mapsPanel.add(mapView);
 		
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
@@ -90,7 +93,7 @@ public class MainWindow extends JFrame{
 	
 	private JPanel createViewPanel(JComponent c, String title) {
 		JPanel p = new JPanel( new BorderLayout());
-		Border b = BorderFactory.createLineBorder(Color.black);
+		Border b = BorderFactory.createLineBorder(Color.black, 2);
 		p.setBorder(BorderFactory.createTitledBorder(b, title));
 		p.add(new JScrollPane(c));
 		return p;

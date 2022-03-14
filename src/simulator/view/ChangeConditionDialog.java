@@ -39,6 +39,7 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	
 	protected Controller ctrl;
 	
+	protected JToolBar selectOptions;
 	protected JComboBox<SimulatedObject> simulatedObjectSelection;
 	protected JComboBox<Object> conditionSelection;
 	protected JSpinner ticksSelection;
@@ -49,9 +50,9 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	
 	ChangeConditionDialog(Controller c, Window w) {
 		super((Frame) w, true);
-		c.addObserver(this);
 		ctrl = c;
 		initGUI();
+		c.addObserver(this);
 	}
 	
 	private void initGUI() {
@@ -90,15 +91,14 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 		this.setLocation(screenSize.width / 2 - WIDTH / 2, screenSize.height / 2 - HEIGHT / 2);
 		this.setSize(new Dimension(WIDTH, HEIGHT));
 		this.setResizable(false);
+		this.setVisible(false);
 	}
 	
 	protected abstract String setDescription();
 
 	protected abstract String setSimulatedObjectSelectionText();
 	protected JComboBox<SimulatedObject> createSimulatedObjectSelection() {
-		JComboBox<SimulatedObject> simulatedObjectSelection = new JComboBox<>(
-				ids
-		);		
+		JComboBox<SimulatedObject> simulatedObjectSelection = new JComboBox<>();		
 		simulatedObjectSelection.setMaximumSize(new Dimension(100,30));
 		return simulatedObjectSelection;
 	}
