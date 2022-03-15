@@ -61,10 +61,9 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 		if (_map == null || _map.getRoads().size() == 0) {
 			g.setColor(Color.red);
 			g.drawString("No map yet!", getWidth() / 2 - 50, getHeight() / 2);
-		} else {
-			//updatePrefferedSize();
+		} 
+		else 
 			drawMap(g);
-		}
 	}
 
 	private void drawMap(Graphics g) {
@@ -76,7 +75,7 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 		for (Road r : _map.getRoads()) {
 			//Draw road
 			int x1 = 50;
-			int x2 = getWidth() - 100;
+			int x2 = getWidth() - 150;
 			int y = (i + 1) * 50;
 			g.setColor(ROAD_COLOR);
 			g.drawLine(x1, y, x2, y);
@@ -108,6 +107,12 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			//draw vehicles in junction
 			for(Vehicle v : r.getDest().getQueues().get(r))
 				drawVehicleInJunction(g, v, x2, y);
+			
+			//draw weather conditions
+			g.drawImage(getWeatherConditionsImage(r), x2 + 20, y - 16, 32, 32, this);
+			
+			//draw contamination
+			g.drawImage(getContaminationImage(r), x2 + 60, y - 16, 32, 32, this);
 		}
 	}
 	
@@ -126,22 +131,42 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 		g.drawString(v.getId(), x2, y - 6);
 	}
 	
-	/*
-	private void updatePrefferedSize() {
-		int maxW = 200;
-		int maxH = 200;
-		for (Junction j : _map.getJunctions()) {
-			maxW = Math.max(maxW, j.getX());
-			maxH = Math.max(maxH, j.getY());
-		}
-		maxW += 20;
-		maxH += 20;
-		if (maxW > getWidth() || maxH > getHeight()) {
-			setPreferredSize(new Dimension(maxW, maxH));
-			setSize(new Dimension(maxW, maxH));
+	private Image getWeatherConditionsImage(Road road) {
+		switch (road.getWeather()){
+		case SUNNY :
+			return loadImage("sun.png");
+		case CLOUDY :
+			return loadImage("cloud.png");
+		case RAINY :
+			return loadImage("rain.png");
+		case WINDY :
+			return loadImage("wind.png");
+		case STORM :
+			return loadImage("storm.png");
+		default:
+			return null;
 		}
 	}
-	*/
+	
+	private Image getContaminationImage(Road road) {
+		int c = (int) Math.floor(Math.min((double) road.getTotalCO2()/(1.0 + (double) road.getContLimit()),1.0) / 0.19);
+		switch(c) {
+		case 0:
+			return loadImage("cont_0.png");
+		case 1:
+			return loadImage("cont_1.png");
+		case 2:
+			return loadImage("cont_2.png");
+		case 3:
+			return loadImage("cont_3.png");
+		case 4:
+			return loadImage("cont_4.png");
+		case 5:
+			return loadImage("cont_5.png");
+		default:
+			return null;
+		}
+	}
 	
 	private Image loadImage(String img) {
 		Image i = null;
