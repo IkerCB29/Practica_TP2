@@ -10,6 +10,7 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
+import simulator.model.VehicleStatus;
 
 public class VehiclesTableModel extends AbstractTableModel implements TrafficSimObserver{
 
@@ -47,6 +48,13 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 		case 0:
 			return vehicles.get(rowIndex).getId();
 		case 1:
+			VehicleStatus status = vehicles.get(columnIndex).getStatus();
+			if (status == VehicleStatus.PENDING)
+				return "Pending";
+			if (status == VehicleStatus.WAITING)
+				return "Waiting:" + vehicles.get(columnIndex).getRoad().getDest();
+			if (status == VehicleStatus.ARRIVED)
+				return "Arrived";
 			return vehicles.get(rowIndex).getRoad() + ":" + vehicles.get(rowIndex).getLocation();
 		case 2:
 			return vehicles.get(rowIndex).getItinerary();
