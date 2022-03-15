@@ -20,7 +20,6 @@ import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
-import simulator.model.VehicleStatus;
 
 public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 
