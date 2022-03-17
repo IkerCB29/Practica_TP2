@@ -48,30 +48,30 @@ public class MainWindow extends JFrame{
 		
 		//tables
 		JTable eventsTable = new JTable(new EventsTableModel(ctrl));
-		eventsTable.setShowGrid(false);
+		configureTable(eventsTable);
 		JPanel eventsView =
 				createViewPanel(eventsTable, "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
 		
 		JTable vehiclesTable = new JTable(new VehiclesTableModel(ctrl));
-		vehiclesTable.setShowGrid(false);
+		configureTable(vehiclesTable);
 		JPanel vehiclesView =
 				createViewPanel(vehiclesTable, "Vehicles");
 		vehiclesView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(vehiclesView);
 		
 		JTable roadsTable = new JTable(new RoadsTableModel(ctrl));
-		roadsTable.setShowGrid(false);
+		configureTable(roadsTable);
 		JPanel roadsView =
 				createViewPanel(roadsTable, "Roads");
 		roadsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(roadsView);
 		
-		JTable junctionTable = new JTable(new JunctionsTableModel(ctrl));
-		junctionTable.setShowGrid(false);
+		JTable junctionsTable = new JTable(new JunctionsTableModel(ctrl));
+		configureTable(junctionsTable);
 		JPanel junctionsView =
-				createViewPanel(junctionTable, "Junctions");
+				createViewPanel(junctionsTable, "Junctions");
 		junctionsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(junctionsView);
 		
@@ -88,6 +88,11 @@ public class MainWindow extends JFrame{
 		this.pack();
 		this.setExtendedState(MAXIMIZED_BOTH);
 		this.setVisible(true);
+	}
+	
+	private void configureTable(JTable t) {
+		t.setShowGrid(false);
+		t.setFillsViewportHeight(true);
 	}
 	
 	private JPanel createViewPanel(JComponent c, String title) {

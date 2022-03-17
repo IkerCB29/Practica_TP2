@@ -12,12 +12,10 @@ import org.json.JSONTokener;
 import simulator.factories.Factory;
 import simulator.misc.Pair;
 import simulator.model.Event;
-import simulator.model.Road;
 import simulator.model.SetContClassEvent;
 import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
-import simulator.model.Vehicle;
 import simulator.model.Weather;
 
 public class Controller {
