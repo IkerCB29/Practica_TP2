@@ -71,7 +71,7 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 						(Integer) conditionSelection.getSelectedItem()
 				));
 				ctrl.addChangeCO2Event(
-						Integer.parseInt(ticksSelection.getValue().toString()), 
+						(Integer) ticksSelection.getValue(), 
 						cs
 				);
 			}

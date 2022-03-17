@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -26,21 +27,21 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
 		
-		JPanel timeInfo = new JPanel();
+		JPanel info = new JPanel();
 		JLabel timeText = new JLabel(" Time: ");
-		timeInfo.add(timeText);
+		info.add(timeText);
 		timeValue = new JLabel("0");
-		timeInfo.add(timeValue);
-
-		this.add(timeInfo, BorderLayout.WEST);
-		
+		timeValue.setPreferredSize(new Dimension(100, 25));
+		info.add(timeValue);
 		eventInfo = new JLabel();
-		this.add(eventInfo, BorderLayout.EAST);
+		info.add(eventInfo);
+
+		this.add(info, BorderLayout.WEST);
 	}
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		timeValue.setText(Integer.toString(time));
+		timeValue.setText(String.format("%d", time));
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		eventInfo.setText("Event added (" + e.toString() + ")  ");
+		eventInfo.setText(String.format("Event added (%s)", e.toString()));
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 						(Weather) conditionSelection.getSelectedItem()
 				));
 				ctrl.addChangeWeatherEvent(
-						Integer.parseInt(ticksSelection.getValue().toString()), 
+						(Integer) ticksSelection.getValue(), 
 						ws
 				);
 			}

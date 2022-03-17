@@ -138,7 +138,6 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	
 	private void closeWindow() {
 		this.setVisible(false);
-		this.dispose();
 	}
 	
 	protected abstract JButton createBuildEventButton();

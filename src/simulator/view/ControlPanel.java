@@ -29,17 +29,27 @@ import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
-	private final static String LOAD_EVENTS_ICON_DIR = "resources\\icons\\open.png";
-	private final static String CHANGE_CONT_ICON_DIR = "resources\\icons\\co2class.png";
-	private final static String CHANGE_WEATHER_ICON_DIR = "resources\\icons\\weather.png";
-	private final static String START_ICON_DIR = "resources\\icons\\run.png";
-	private final static String STOP_ICON_DIR = "resources\\icons\\stop.png";
-	private final static String EXIT_ICON_DIR = "resources\\icons\\exit.png";
+	private final static String FILE_NOT_FOUND = "File not found";
+	private final static String LOAD_EVENTS_ERROR_MESSAGE = "Error loading events. Check file is correct";
+	private final static String EXECUTION_ERROR_MESSAGE = "Fail during execution";
+	
+	private final static String BASE_DIRECTORY_PATH = "resources";
+	private final static String LOAD_EVENTS_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\open.png";
+	private final static String CHANGE_CONT_ICON_DIR =  BASE_DIRECTORY_PATH + "\\icons\\co2class.png";
+	private final static String CHANGE_WEATHER_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\weather.png";
+	private final static String START_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\run.png";
+	private final static String STOP_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\stop.png";
+	private final static String EXIT_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\exit.png";
 	
 	private final static int TICKS_INI_VALUE = 1;
 	private final static int TICKS_MIN_VALUE = 1;
 	private final static int TICKS_MAX_VALUE = 99999;
 	private final static int TICKS_INCREASE_VALUE = 1;
+	
+	private final static int SPEED_INI_VALUE = 1;
+	private final static int SPEED_MIN_VALUE = 1;
+	private final static int SPEED_MAX_VALUE = 3;
+	private final static int SPEED_INCREASE_VALUE = 1;
 	
 	private Controller ctrl;
 	private ChangeCO2ClassDialog changeCO2ClassDialog;
@@ -50,6 +60,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JButton start;
 	private JButton stop;
 	private JSpinner ticksSelection;
+	private JSpinner speedSelection;
 	private JButton exit;
 	
 	private boolean stopped;
@@ -63,11 +74,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ctrl = c;
 		changeCO2ClassDialog = new ChangeCO2ClassDialog(
 				ctrl,
-				SwingUtilities.getWindowAncestor(ControlPanel.this)
+				null
 		);
 		changeWeatherDialog = new ChangeWeatherDialog(
 				ctrl,
-				SwingUtilities.getWindowAncestor(ControlPanel.this)
+				null
 		);
 		stopped = true;
 		initGUI();
@@ -93,9 +104,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		controls.add(start);
 		stop = createStopButton();
 		controls.add(stop);
-		ticksSelection = createTicksButton();
-		controls.add(new JLabel(" Ticks: "));
+		ticksSelection = createTicksSelection();
+		controls.add(new JLabel("  Ticks: "));
 		controls.add(ticksSelection);
+		speedSelection = createSpeedSelection();
+		controls.add(new JLabel("  Speed: "));
+		controls.add(speedSelection);
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		exit = createExitButton();
@@ -110,7 +124,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		loadEvents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser("resources");
+				JFileChooser fileChooser = new JFileChooser(BASE_DIRECTORY_PATH);
 				int select = fileChooser.showOpenDialog(ControlPanel.this);
 				if(select == JFileChooser.APPROVE_OPTION) {
 					try {
@@ -119,10 +133,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 						ctrl.loadEvents(new FileInputStream(file));
 					} 
 					catch (FileNotFoundException fileErr) {
-						JOptionPane.showMessageDialog(null, "File not found");
+						JOptionPane.showMessageDialog(null, FILE_NOT_FOUND);
 					}
 					catch (Exception err) {
-						JOptionPane.showMessageDialog(null, "Error loading events. Check file is correct");
+						JOptionPane.showMessageDialog(null, LOAD_EVENTS_ERROR_MESSAGE);
 						ctrl.reset();
 					}
 				}
@@ -179,15 +193,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		if (n > 0 && !stopped) {
 			try {
 				ctrl.run(1);
-			} catch (Exception e) {
-				// TODO show error message
+			} 
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
 				stopped = true;
 				return;
 			}
 			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.sleep(100 / (Integer) speedSelection.getValue());
+			} 
+			catch (InterruptedException e) {
+				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
+				return;
 			}
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -227,7 +244,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		stopped = true;
 	}
 	
-	private JSpinner createTicksButton() {
+	private JSpinner createTicksSelection() {
 		ticksSelection = new JSpinner(
 				new SpinnerNumberModel(
 						TICKS_INI_VALUE,
@@ -237,6 +254,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		));
 		ticksSelection.setMaximumSize(new Dimension(100,30));
 		return ticksSelection;
+	}
+	
+	private JSpinner createSpeedSelection() {
+		speedSelection = new JSpinner(
+				new SpinnerNumberModel(
+						SPEED_INI_VALUE,
+						SPEED_MIN_VALUE,
+						SPEED_MAX_VALUE,
+						SPEED_INCREASE_VALUE
+		));
+		speedSelection.setMaximumSize(new Dimension(100,30));
+		return speedSelection;
 	}
 	
 	private JButton createExitButton() {
