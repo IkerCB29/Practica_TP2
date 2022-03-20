@@ -46,8 +46,6 @@ public abstract class ChangeConditionDialog extends JDialog implements TrafficSi
 	protected JButton buildEvent;
 	protected JButton cancel;
 	
-	protected SimulatedObject [] ids;
-	
 	ChangeConditionDialog(Controller c, Window w) {
 		super((Frame) w, true);
 		ctrl = c;

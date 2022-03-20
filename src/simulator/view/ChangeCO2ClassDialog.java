@@ -103,10 +103,10 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 	private void updateSimulatedObjectArray(RoadMap map) {
 		List<Vehicle> vehicleList = map.getVehicles();
 		int size = vehicleList.size();
-		ids = new Vehicle[size];
+		Vehicle [] vehicles = new Vehicle[size];
 		for(int i = 0; i < size; i++)
-			ids[i] = vehicleList.get(i);
-		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(ids));
+			vehicles[i] = vehicleList.get(i);
+		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(vehicles));
 	}
 	
 }

@@ -104,10 +104,10 @@ public class ChangeWeatherDialog extends ChangeConditionDialog{
 	private void updateSimulatedObjectArray(RoadMap map) {
 		List<Road> roadList = map.getRoads();
 		int size = roadList.size();
-		ids = new Road[size];
+		Road [] roads = new Road[size];
 		for(int i = 0; i < size; i++)
-			ids[i] = roadList.get(i);
-		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(ids));
+			roads[i] = roadList.get(i);
+		simulatedObjectSelection.setModel(new DefaultComboBoxModel<SimulatedObject>(roads));
 	}
 
 }
