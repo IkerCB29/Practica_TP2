@@ -48,19 +48,27 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		return ticks;
 	}
 	
-	public void advance(){
-		ticks++;
-		
-		for(TrafficSimObserver a : observers ) {
-			a.onAdvanceStart(roads, events, ticks);
+	public void advance () {
+		try {
+			ticks++;
+			
+			for(TrafficSimObserver a : observers ) {
+				a.onAdvanceStart(roads, events, ticks);
+			}
+			
+			executeEvents();
+			advanceJunctions();
+			advanceRoads();
+			
+			for(TrafficSimObserver a : observers ) {
+				a.onAdvanceEnd(roads, events, ticks);
+			}
 		}
-		
-		executeEvents();
-		advanceJunctions();
-		advanceRoads();
-		
-		for(TrafficSimObserver a : observers ) {
-			a.onAdvanceEnd(roads, events, ticks);
+		catch(Exception e) {
+			for(TrafficSimObserver a : observers ) {
+				a.onError(e.getMessage());
+			}
+			throw e;
 		}
 	}
 
@@ -91,6 +99,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		roads.reset();
 		events.clear();
 		ticks = INITIAL_TICKS;
+
 		
 		for(TrafficSimObserver a : observers ) {
 			a.onReset(roads, events, ticks);
@@ -103,14 +112,6 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		jo.put("time", ticks);
 		jo.put("state", roads.report());
 		return jo;
-	}
-	
-	public List<Vehicle> getVehicles(){
-		return roads.getVehicles();
-	}
-	
-	public List<Road> getRoads(){
-		return roads.getRoads();
 	}
 	
 }

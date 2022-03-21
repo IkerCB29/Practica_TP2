@@ -1,6 +1,5 @@
 package simulator.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -21,7 +20,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	private List<Event> events;
 	
 	EventsTableModel (Controller c) {
-		events = new ArrayList<>();
 		c.addObserver(this);
 	}
 	
@@ -66,9 +64,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		int size = this.events.size();
-		this.events = new ArrayList<>();
-		this.fireTableRowsDeleted(0, size);
+		update(events);
 	}
 
 	@Override

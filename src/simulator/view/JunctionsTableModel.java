@@ -1,6 +1,5 @@
 package simulator.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -67,9 +66,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		int size = junctions.size();
-		junctions = new ArrayList<>();
-		this.fireTableRowsDeleted(0, size);
+		update(map);
 	}
 
 	@Override

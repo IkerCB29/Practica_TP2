@@ -21,6 +21,7 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -74,11 +75,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ctrl = c;
 		changeCO2ClassDialog = new ChangeCO2ClassDialog(
 				ctrl,
-				null
+				SwingUtilities.getWindowAncestor(this)
 		);
 		changeWeatherDialog = new ChangeWeatherDialog(
 				ctrl,
-				null
+				SwingUtilities.getWindowAncestor(this)
 		);
 		stopped = true;
 		initGUI();
@@ -125,6 +126,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser(BASE_DIRECTORY_PATH);
+		        fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON file", "json"));
 				int select = fileChooser.showOpenDialog(ControlPanel.this);
 				if(select == JFileChooser.APPROVE_OPTION) {
 					try {
@@ -309,7 +312,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 
 	@Override
-	public void onError(String err) {}
+	public void onError(String err) {
+		JOptionPane.showMessageDialog(this.getRootPane(), err);
+	}
 	
 	private void getNumSimulatedObjects(RoadMap map) {
 		numVehicles = map.getVehicles().size();
