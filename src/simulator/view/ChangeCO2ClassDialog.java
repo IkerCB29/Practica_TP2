@@ -52,9 +52,9 @@ public class ChangeCO2ClassDialog extends ChangeConditionDialog{
 	
 	@Override
 	protected Object[] getConditionValuesArray() {
-		Object[] values = new Integer [CO2_NUM_VALUES];
-		for(int i = 0; i < CO2_NUM_VALUES; i++) {
-			values[i] = new Integer(i + 1);
+		Object[] values = new Integer [CO2_NUM_VALUES + 1];
+		for(int i = 0; i <= CO2_NUM_VALUES; i++) {
+			values[i] = new Integer(i);
 		}
 		return values;
 	}
