@@ -63,11 +63,7 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			g.drawString("No map yet!", getWidth() / 2 - 50, getHeight() / 2);
 		} 
 		else 
-			drawMap(g);
-	}
-
-	private void drawMap(Graphics g) {
-		drawRoads(g);
+			drawRoads(g);
 	}
 	
 	private void drawRoads(Graphics g) {
@@ -104,10 +100,6 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			for(Vehicle v : r.getVehicles())
 				drawVehicle(g, v, x1, x2, y);
 			
-			//draw vehicles in junction
-			for(Vehicle v : r.getDest().getQueues().get(r))
-				drawVehicleInJunction(g, v, x2, y);
-			
 			//draw weather conditions
 			g.drawImage(getWeatherConditionsImage(r), x2 + 20, y - 16, 32, 32, this);
 			
@@ -122,13 +114,6 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 		int x = x1 + (int) ((x2 - x1) * (double) v.getLocation() / (double) v.getRoad().getLength());
 		g.drawImage(_car, x, y - 8, 16, 16, this);
 		g.drawString(v.getId(), x, y - 6);
-	}
-	
-	private void drawVehicleInJunction(Graphics g, Vehicle v, int x2, int y) {
-		int vLabelColor = (int) (25.0 * (10.0 - (double) v.getContClass()));
-		g.setColor(new Color(0, vLabelColor, 0));
-		g.drawImage(_car, x2, y - 8, 16, 16, this);
-		g.drawString(v.getId(), x2, y - 6);
 	}
 	
 	private Image getWeatherConditionsImage(Road road) {

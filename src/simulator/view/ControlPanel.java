@@ -196,17 +196,15 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		if (n > 0 && !stopped) {
 			try {
 				ctrl.run(1);
-			} 
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
-				stopped = true;
-				return;
-			}
-			try {
 				Thread.sleep(100 / (Integer) speedSelection.getValue());
 			} 
 			catch (InterruptedException e) {
 				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
+				return;
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
+				stopped = true;
 				return;
 			}
 			SwingUtilities.invokeLater(new Runnable() {
@@ -312,9 +310,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 
 	@Override
-	public void onError(String err) {
-		JOptionPane.showMessageDialog(this.getRootPane(), err);
-	}
+	public void onError(String err) {}
 	
 	private void getNumSimulatedObjects(RoadMap map) {
 		numVehicles = map.getVehicles().size();

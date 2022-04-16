@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import simulator.control.Controller;
@@ -59,6 +60,8 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 	public void onRegister(RoadMap map, List<Event> events, int time) {}
 
 	@Override
-	public void onError(String err) {}
+	public void onError(String err) {
+		JOptionPane.showMessageDialog(this.getRootPane(), err);
+	}
 
 }
