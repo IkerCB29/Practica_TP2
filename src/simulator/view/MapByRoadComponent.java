@@ -81,13 +81,13 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			g.drawString(r.toString(), x1 - 25, y);
 			
 			//src junction
-			drawJunction(g, JUNCTION_COLOR, x1, y, r);
+			drawJunction(g, JUNCTION_COLOR, x1, y, r.getSrc().toString());
 			
 			//dest junction
 			if(r.getDest().getGreenRoadId().equals(r.toString()))
-				drawJunction(g, GREEN_LIGHT_COLOR, x2, y, r);
+				drawJunction(g, GREEN_LIGHT_COLOR, x2, y, r.getDest().toString());
 			else
-				drawJunction(g, RED_LIGHT_COLOR, x2, y, r);
+				drawJunction(g, RED_LIGHT_COLOR, x2, y, r.getDest().toString());
 			
 			i++;
 			
@@ -103,11 +103,11 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 		}
 	}
 	
-	private void drawJunction(Graphics g, Color color, int x, int y, Road r) {
+	private void drawJunction(Graphics g, Color color, int x, int y, String str) {
 		g.setColor(color);
 		g.fillOval(x, y - 3, 6, 6);
 		g.setColor(JUNCTION_LABEL_COLOR);
-		g.drawString(r.getSrc().toString(), x, y - 6);
+		g.drawString(str, x, y - 6);
 	}
 	
 	private void drawVehicle(Graphics g, Vehicle v, int x1, int x2, int y) {
