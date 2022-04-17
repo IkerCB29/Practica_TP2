@@ -81,19 +81,14 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			g.drawString(r.toString(), x1 - 25, y);
 			
 			//src junction
-			g.setColor(JUNCTION_COLOR);
-			g.fillOval(x1, y - 3, 6, 6);
-			g.setColor(JUNCTION_LABEL_COLOR);
-			g.drawString(r.getSrc().toString(), x1, y - 6);
+			drawJunction(g, JUNCTION_COLOR, x1, y, r);
 			
 			//dest junction
 			if(r.getDest().getGreenRoadId().equals(r.toString()))
-				g.setColor(GREEN_LIGHT_COLOR);
+				drawJunction(g, GREEN_LIGHT_COLOR, x2, y, r);
 			else
-				g.setColor(RED_LIGHT_COLOR);
-			g.fillOval(x2, y - 3, 6, 6);
-			g.setColor(JUNCTION_LABEL_COLOR);
-			g.drawString(r.getDest().toString(), x2, y - 6);
+				drawJunction(g, RED_LIGHT_COLOR, x2, y, r);
+			
 			i++;
 			
 			//draw vehicles in road
@@ -106,6 +101,13 @@ public class MapByRoadComponent  extends JPanel implements TrafficSimObserver {
 			//draw contamination
 			g.drawImage(getContaminationImage(r), x2 + 60, y - 16, 32, 32, this);
 		}
+	}
+	
+	private void drawJunction(Graphics g, Color color, int x, int y, Road r) {
+		g.setColor(color);
+		g.fillOval(x, y - 3, 6, 6);
+		g.setColor(JUNCTION_LABEL_COLOR);
+		g.drawString(r.getSrc().toString(), x, y - 6);
 	}
 	
 	private void drawVehicle(Graphics g, Vehicle v, int x1, int x2, int y) {
