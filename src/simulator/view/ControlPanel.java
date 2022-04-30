@@ -32,7 +32,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 	private final static String FILE_NOT_FOUND = "File not found";
 	private final static String LOAD_EVENTS_ERROR_MESSAGE = "Error loading events. Check file is correct";
-	private final static String EXECUTION_ERROR_MESSAGE = "Fail during execution";
 	
 	private final static String BASE_DIRECTORY_PATH = "resources";
 	private final static String LOAD_EVENTS_ICON_DIR = BASE_DIRECTORY_PATH + "\\icons\\open.png";
@@ -47,10 +46,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private final static int TICKS_MAX_VALUE = 99999;
 	private final static int TICKS_INCREASE_VALUE = 1;
 	
-	private final static int SPEED_INI_VALUE = 1;
-	private final static int SPEED_MIN_VALUE = 1;
-	private final static int SPEED_MAX_VALUE = 3;
-	private final static int SPEED_INCREASE_VALUE = 1;
+	private final static int DELAY_INI_VALUE = 0;
+	private final static int DELAY_MIN_VALUE = 0;
+	private final static int DELAY_MAX_VALUE = 1000;
+	private final static int DELAY_INCREASE_VALUE = 1;
+	
+	private volatile Thread thread;
 	
 	private Controller ctrl;
 	private ChangeCO2ClassDialog changeCO2ClassDialog;
@@ -61,10 +62,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JButton start;
 	private JButton stop;
 	private JSpinner ticksSelection;
-	private JSpinner speedSelection;
+	private JSpinner delaySelection;
 	private JButton exit;
 	
-	private boolean stopped;
 	private int numVehicles;
 	private int numRoads;
 	
@@ -81,12 +81,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				ctrl,
 				SwingUtilities.getWindowAncestor(this)
 		);
-		stopped = true;
 		initGUI();
 	}
 	
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
+		
+		thread = null;
 		
 		JToolBar controls = new JToolBar();
 		controls.setFloatable(false);
@@ -108,9 +109,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ticksSelection = createTicksSelection();
 		controls.add(new JLabel("  Ticks: "));
 		controls.add(ticksSelection);
-		speedSelection = createSpeedSelection();
-		controls.add(new JLabel("  Speed: "));
-		controls.add(speedSelection);
+		delaySelection = createDelaySelection();
+		controls.add(new JLabel("  Delay: "));
+		controls.add(delaySelection);
 		controls.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		exit = createExitButton();
@@ -184,40 +185,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				stopped = false;
 				enableToolBar(false);
-				run_sim((Integer) ticksSelection.getValue());
+				thread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						run_sim((Integer) ticksSelection.getValue(), (Integer) delaySelection.getValue());
+						enableToolBar(true);
+					}
+				});
+				thread.start();
 			}
 		});
 		return start;
-	}
-	
-	private void run_sim(int n) {
-		if (n > 0 && !stopped) {
-			try {
-				ctrl.run(1);
-				Thread.sleep(100 / (Integer) speedSelection.getValue());
-			} 
-			catch (InterruptedException e) {
-				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
-				return;
-			}
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(null, EXECUTION_ERROR_MESSAGE); 
-				stopped = true;
-				return;
-			}
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					run_sim(n - 1);
-				}
-			});
-		} 
-		else {
-			enableToolBar(true);
-			stopped = true;
-		}
 	}
 	
 	private void enableToolBar(boolean state) {
@@ -226,7 +205,21 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		changeWeatherCondition.setEnabled(state);
 		start.setEnabled(state);
 		ticksSelection.setEnabled(state);
+		delaySelection.setEnabled(state);
 		exit.setEnabled(state);
+	}
+
+	private void run_sim(int ticks, int delay) {
+		while(ticks > 0 && !Thread.interrupted()) {
+			try {
+				ctrl.run(1);
+				Thread.sleep(delay);
+			} 
+			catch (Exception e) {
+				return;
+			}
+			--ticks;
+		}
 	}
 	
 	private JButton createStopButton() {
@@ -242,11 +235,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void stop() {
-		stopped = true;
+		if(thread != null) {
+			thread.interrupt();
+			thread = null;
+		}
 	}
 	
 	private JSpinner createTicksSelection() {
-		ticksSelection = new JSpinner(
+		JSpinner ticksSelection = new JSpinner(
 				new SpinnerNumberModel(
 						TICKS_INI_VALUE,
 						TICKS_MIN_VALUE,
@@ -257,16 +253,16 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		return ticksSelection;
 	}
 	
-	private JSpinner createSpeedSelection() {
-		speedSelection = new JSpinner(
+	private JSpinner createDelaySelection() {
+		JSpinner delaySelection = new JSpinner(
 				new SpinnerNumberModel(
-						SPEED_INI_VALUE,
-						SPEED_MIN_VALUE,
-						SPEED_MAX_VALUE,
-						SPEED_INCREASE_VALUE
+						DELAY_INI_VALUE,
+						DELAY_MIN_VALUE,
+						DELAY_MAX_VALUE,
+						DELAY_INCREASE_VALUE
 		));
-		speedSelection.setMaximumSize(new Dimension(100,30));
-		return speedSelection;
+		delaySelection.setMaximumSize(new Dimension(100,30));
+		return delaySelection;
 	}
 	
 	private JButton createExitButton() {
