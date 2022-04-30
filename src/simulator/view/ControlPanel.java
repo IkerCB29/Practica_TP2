@@ -21,12 +21,14 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+
 
 public class ControlPanel extends JPanel implements TrafficSimObserver{
 
@@ -51,7 +53,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private final static int DELAY_MAX_VALUE = 1000;
 	private final static int DELAY_INCREASE_VALUE = 1;
 	
-	private volatile Thread thread;
+	private RunWorker runWorker;
 	
 	private Controller ctrl;
 	private ChangeCO2ClassDialog changeCO2ClassDialog;
@@ -87,7 +89,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private void initGUI() {
 		this.setLayout(new BorderLayout());
 		
-		thread = null;
+		runWorker = null;
 		
 		JToolBar controls = new JToolBar();
 		controls.setFloatable(false);
@@ -186,14 +188,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				enableToolBar(false);
-				thread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						run_sim((Integer) ticksSelection.getValue(), (Integer) delaySelection.getValue());
-						enableToolBar(true);
-					}
-				});
-				thread.start();
+				runWorker = new RunWorker((Integer) ticksSelection.getValue(), (Integer) delaySelection.getValue());
+				runWorker.execute();
 			}
 		});
 		return start;
@@ -207,19 +203,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		ticksSelection.setEnabled(state);
 		delaySelection.setEnabled(state);
 		exit.setEnabled(state);
-	}
-
-	private void run_sim(int ticks, int delay) {
-		while(ticks > 0 && !Thread.interrupted()) {
-			try {
-				ctrl.run(1);
-				Thread.sleep(delay);
-			} 
-			catch (Exception e) {
-				return;
-			}
-			--ticks;
-		}
 	}
 	
 	private JButton createStopButton() {
@@ -235,9 +218,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void stop() {
-		if(thread != null) {
-			thread.interrupt();
-			thread = null;
+		if(runWorker != null) {
+			runWorker.cancel(true);
+			runWorker = null;
 		}
 	}
 	
@@ -311,6 +294,36 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private void getNumSimulatedObjects(RoadMap map) {
 		numVehicles = map.getVehicles().size();
 		numRoads = map.getRoads().size();
+	}
+	
+	private class RunWorker extends SwingWorker<Void, Void> {
+		private int ticks;
+		private int delay;
+		
+		public RunWorker(int ticks, int delay) {
+			this.ticks = ticks;
+			this.delay = delay;
+		}
+		
+		@Override
+		protected Void doInBackground() throws Exception {
+			while(ticks > 0 && !Thread.interrupted()) {
+				try {
+					ctrl.run(1);
+					Thread.sleep(delay);
+				} 
+				catch (Exception e) {
+					break;
+				}
+				--ticks;
+			}
+			return null;
+		}
+		
+		@Override
+		protected void done() {
+			enableToolBar(true);
+		}
 	}
 	
 }
